@@ -269,7 +269,7 @@ $user = mysql_fetch_assoc($query);
                   <h3 class="box-title">Panel Komting</h3>
                </div><!-- /.box-header -->
                <div class="box-body">
-                  <p>Hai <b>NAMA NAMA</b>, Anda dipilih sebagai Komisaris Leting untuk mengelola mata kuliah berikut.</p>
+                  <p>Hai <b><?php echo $user['nama'];?></b>, Anda dipilih sebagai Komisaris Leting untuk mengelola mata kuliah berikut.</p>
                   <div class="col-md-6">
                       <a href="#" class="btn btn-danger" style="width: 100%;">Pemograman</a><br><br>
                       <a href="#" class="btn btn-danger" style="width: 100%;">Pemograman Berbasis Web</a><br><br>
