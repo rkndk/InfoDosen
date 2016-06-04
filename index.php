@@ -1,9 +1,7 @@
 <?php
 include "session.php";
 include "koneksi.php";
-
-$query=mysql_query("select * from mahasiswa where nim='$user_check'");
-$user = mysql_fetch_assoc($query);
+$user=$userOnSession
 ?>
 
 <!DOCTYPE html>
@@ -17,7 +15,7 @@ $user = mysql_fetch_assoc($query);
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="dist/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Style Buatan -->
@@ -254,10 +252,10 @@ $user = mysql_fetch_assoc($query);
     <section class="content">
       <!-- Main row -->
       <div class="row col-md-12 center-block">              
-	  	<div class="callout callout-info lead">
+      <div class="callout callout-info lead">
             <h4>Pemberitahuan!</h4>
             <p>Program sistem informasi kamunitas akademik berbasis web.</p>
-      	</div>
+        </div>
       </div>
       <div class="row">
         <!-- Left col -->
@@ -285,36 +283,36 @@ $user = mysql_fetch_assoc($query);
             </div><!-- /.box -->
             <!-- /.Paneal Komting -->
 
-      			<!-- Dosen Available Status -->
-      			<div class="box box-solid box-info">
-      				<div class="box-header">
-      				  <i class="fa fa-desktop"></i>
-      				  <h3 class="box-title">Statistik Status</h3>
-      				</div>
-      				<!-- /.box-body -->
-      				<div class="box-footer no-border">
-      				  <div class="row">
-      					<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-      					  <input type="text" class="knob" data-readonly="true" value="70" data-width="60" data-height="60" data-fgColor="#39CCCC">
-      					  <div class="knob-label"><i class="fa fa-circle text-green"></i>  AVAILABLE</div>
-      					</div>
-      					<!-- ./col -->
-      					<div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-      					  <input type="text" class="knob" data-readonly="true" value="10" data-width="60" data-height="60" data-fgColor="#39CCCC">
-      					  <div class="knob-label"><i class="fa fa-circle text-yellow"></i>  BUSY</div>
-      					</div>
-      					<!-- ./col -->
-      					<div class="col-xs-4 text-center">
-      					  <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
-      					  <div class="knob-label"><i class="fa fa-circle text-red"></i>  UNAVAILABLE</div>
-      					</div>
-      					<!-- ./col -->
-      				  </div>
-      				  <!-- /.row -->
-      				</div>
-      				<!-- /.box-footer -->
-      			</div>
-      			<!-- /.box --> 
+            <!-- Dosen Available Status -->
+            <div class="box box-solid box-info">
+              <div class="box-header">
+                <i class="fa fa-desktop"></i>
+                <h3 class="box-title">Statistik Status</h3>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer no-border">
+                <div class="row">
+                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                  <input type="text" class="knob" data-readonly="true" value="70" data-width="60" data-height="60" data-fgColor="#39CCCC">
+                  <div class="knob-label"><i class="fa fa-circle text-green"></i>  AVAILABLE</div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                  <input type="text" class="knob" data-readonly="true" value="10" data-width="60" data-height="60" data-fgColor="#39CCCC">
+                  <div class="knob-label"><i class="fa fa-circle text-yellow"></i>  BUSY</div>
+                </div>
+                <!-- ./col -->
+                <div class="col-xs-4 text-center">
+                  <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
+                  <div class="knob-label"><i class="fa fa-circle text-red"></i>  UNAVAILABLE</div>
+                </div>
+                <!-- ./col -->
+                </div>
+                <!-- /.row -->
+              </div>
+              <!-- /.box-footer -->
+            </div>
+            <!-- /.box --> 
 
 
 
@@ -326,85 +324,13 @@ $user = mysql_fetch_assoc($query);
               </div>
               <!-- /.box-body -->
               <div class="box-body">
-                <!-- Widget: list -->
-                <div class="col-md-6">
-                    <!-- Widget: user widget style 1 -->
-                    <div class="box box-widget widget-user" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
-                    <!-- Add the bg color to the header using any of the bg-* classes -->
-                    <div class="widget-user-header bg-aqua-active">
-                      <h3 class="widget-user-username">Si B</h3>
-                      <h5 class="widget-user-desc">HAHAHA</h5>
-                    </div>
-                    <div class="widget-user-image">
-                      <img class="img-circle" src="dist/img/1.jpg" alt="User Avatar">
-                    </div>
-                    <div class="box-footer">
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <div class="description-block">
-                          <i class="fa fa-circle text-green"></i>
-                          <span class="description-text">available</span>
-                          </div>
-                          <!-- /.description-block -->
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-sm-4 border-right">
-                          <div style="font-size: 20px;" class="description-block">
-                            <a href="#">
-                              <i class="fa fa-user" data-toggle="tooltip" title="Lihat Profil"></i>
-                            </a>
-                          </div>
-                          <!-- /.description-block -->
-                        </div>
-                        <div class="col-sm-4 border-right">
-                          <div style="font-size: 20px;" class="description-block">
-                          <a href="#">
-                            <i class="fa fa-star"></i>
-                          </a>
-                          </div>
-                          <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-sm-4">
-                          <div style="font-size: 20px;" class="description-block">
-                          <a href="#">
-                            <i class="fa fa-envelope" data-toggle="tooltip" title="Kirim Pesan"></i>
-                          </a>
-                          </div>
-                          <!-- /.description-block -->
-                        </div>
-                        <!-- /.col -->
-                      </div>
-                      <!-- /.row -->
-                    </div>
-                    </div>
-                    <!-- /.widget-user -->
-                </div>
-              </div>
-              <!-- /.box-body -->
-            </div>
-            <!-- /.box --> 
-
-
-			
-      			<!-- Dosen List -->
-      			<div class="box box-solid box-info">
-      				<div class="box-header">
-      				  <i class="fa fa-users"></i>
-      				  <h3 class="box-title">Daftar Dosen</h3>
-      				</div>
-      				<div class="box-body">
-      					<!-- Widget: list -->
-                
-                
-                
                 <?php
+                  $haha = "select * from favorit RIGHT JOIN dosen on favorit.nim='".$user['nim']."' AND favorit.nip=dosen.nip where nim='".$user['nim']."'";
                   $sql="select * from dosen";
-                  $sqla=mysql_query($sql);
+                  $sqla=mysql_query($haha);
                   while($data = mysql_fetch_array($sqla)) {
                     echo ' 
-                          <div class="col-md-6">
+                          <section id="'.$data["nip"].'" class="col-md-6">
                               <!-- Widget: user widget style 1 -->
                             <div class="box box-widget widget-user" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
                               <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -435,10 +361,14 @@ $user = mysql_fetch_assoc($query);
                                     <!-- /.description-block -->
                                   </div>
                                   <div class="col-sm-4 border-right">
-                                    <div style="font-size: 20px;" class="description-block">
-                                    <a href="#">
-                                      <i class="fa fa-star-o"></i>
-                                    </a>
+                                    <div style="font-size: 20px;" class="description-block">';
+                                      if(!empty($data['nim'])){
+                                        echo '<div class="favorit-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></div>';
+                                      }
+                                      else{
+                                        echo '<div class="favorit-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></div>'; 
+                                      }
+                                  echo '
                                     </div>
                                     <!-- /.description-block -->
                                   </div>
@@ -457,33 +387,99 @@ $user = mysql_fetch_assoc($query);
                               </div>
                             </div>
                               <!-- /.widget-user -->
-                          </div>
-
- 
-
-
-
-
-
-
-                    ';
+                          </section>';
                   }
-
-                
-                
                 ?>
                 
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box --> 
 
-      					
-      					
-      					
-      					
-      					
-      					
-      				</div>
-      				<!-- /.box-body -->
-      			</div>
-      			<!-- /.box -->
+
+      
+            <!-- Dosen List -->
+            <div class="box box-solid box-info">
+              <div class="box-header">
+                <i class="fa fa-users"></i>
+                <h3 class="box-title">Daftar Dosen</h3>
+              </div>
+              <div class="box-body">
+                <!-- Widget: list -->
+                
+                
+                
+                <?php
+                  $haha = "select * from favorit RIGHT JOIN dosen on favorit.nim='".$user['nim']."' AND favorit.nip=dosen.nip";
+                  $sql="select * from dosen";
+                  $sqla=mysql_query($haha);
+                  while($data = mysql_fetch_array($sqla)) {
+                    echo ' 
+                          <section id="'.$data["nip"].'" class="col-md-6">
+                              <!-- Widget: user widget style 1 -->
+                            <div class="box box-widget widget-user" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
+                              <!-- Add the bg color to the header using any of the bg-* classes -->
+                              <div class="widget-user-header bg-aqua-active">
+                                <h3 class="widget-user-username">'.$data["nama"].'</h3>
+                                <h5 class="widget-user-desc">'.$data["nip"].'</h5>
+                              </div>
+                              <div class="widget-user-image">
+                                <img class="img-circle" src="dist/img/'.$data["foto"].'" alt="User Avatar">
+                              </div>
+                              <div class="box-footer">
+                                <div class="row">
+                                  <div class="col-sm-12">
+                                    <div class="description-block">
+                                    <i class="fa fa-circle text-green"></i>
+                                    <span class="description-text">available</span>
+                                    </div>
+                                    <!-- /.description-block -->
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-sm-4 border-right">
+                                    <div style="font-size: 20px;" class="description-block">
+                                      <a href="/dosen/?nip='.$data["nip"].'">
+                                        <i class="fa fa-user" data-toggle="tooltip" title="Lihat Profil"></i>
+                                      </a>
+                                    </div>
+                                    <!-- /.description-block -->
+                                  </div>
+                                  <div class="col-sm-4 border-right">
+                                    <div style="font-size: 20px;" class="description-block">';
+                                      if(!empty($data['nim'])){
+                                        echo '<div class="favorit-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></div>';
+                                      }
+                                      else{
+                                        echo '<div class="favorit-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></div>'; 
+                                      }
+                                  echo '
+                                    </div>
+                                    <!-- /.description-block -->
+                                  </div>
+                                  <!-- /.col -->
+                                  <div class="col-sm-4">
+                                    <div style="font-size: 20px;" class="description-block">
+                                    <a href="#">
+                                      <i class="fa fa-envelope" data-toggle="tooltip" title="Kirim Pesan"></i>
+                                    </a>
+                                    </div>
+                                    <!-- /.description-block -->
+                                  </div>
+                                  <!-- /.col -->
+                                </div>
+                                <!-- /.row -->
+                              </div>
+                            </div>
+                              <!-- /.widget-user -->
+                          </section>';
+                  }
+                ?>
+                
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
 
           <!-- TO DO List -->
           <div class="box box-info">
@@ -553,15 +549,15 @@ $user = mysql_fetch_assoc($query);
             </div><!-- /.box-header -->
             <div class="box-body">
             
-             	<div class="col-md-12">
+              <div class="col-md-12">
                   <div class="box box-info" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
                     <div class="box-header with-border">
                       <h3 class="box-title">Pemograman berbasis Web</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-	                     <!-- Message. Default to the left -->
+                       <!-- Message. Default to the left -->
                          <div class="direct-chat-msg">
-    	                      <div class="direct-chat-info clearfix">
+                            <div class="direct-chat-info clearfix">
                                 <span class="direct-chat-name pull-left">Dosen</span>
                                 <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
                               </div><!-- /.direct-chat-info -->
@@ -569,7 +565,7 @@ $user = mysql_fetch_assoc($query);
                               <div class="direct-chat-text">
                                 Perkuliahan hari ini mengenai PHP
                               </div><!-- /.direct-chat-text -->
-						              </div><!-- /.direct-chat-msg -->
+                          </div><!-- /.direct-chat-msg -->
                                 
                         <div class="direct-chat-msg">
                               <div class="direct-chat-info clearfix">
@@ -580,7 +576,7 @@ $user = mysql_fetch_assoc($query);
                               <div class="direct-chat-text">
                                 Akan diadakan jam tambahan pada minggu depan
                               </div><!-- /.direct-chat-text -->
-						            </div><!-- /.direct-chat-msg -->
+                        </div><!-- /.direct-chat-msg -->
                         <button type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> BATAL IKUTI</button>
                     </div><!-- /.box-body -->
                   </div><!-- /.box -->
@@ -592,9 +588,9 @@ $user = mysql_fetch_assoc($query);
                       <h3 class="box-title">Jaringan Komputer</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-	                     <!-- Message. Default to the left -->
+                       <!-- Message. Default to the left -->
                          <div class="direct-chat-msg">
-    	                      <div class="direct-chat-info clearfix">
+                            <div class="direct-chat-info clearfix">
                                 <span class="direct-chat-name pull-left">Dosen</span>
                                 <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
                               </div><!-- /.direct-chat-info -->
@@ -602,7 +598,7 @@ $user = mysql_fetch_assoc($query);
                               <div class="direct-chat-text">
                                 Pelajari tentang topologi jaringan
                               </div><!-- /.direct-chat-text -->
-						              </div><!-- /.direct-chat-msg -->
+                          </div><!-- /.direct-chat-msg -->
                           <button type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> BATAL IKUTI</button>     
                     </div><!-- /.box-body -->
                   </div><!-- /.box -->
@@ -614,9 +610,9 @@ $user = mysql_fetch_assoc($query);
                       <h3 class="box-title">Rekayasa Perangkat Lunak</h3>
                     </div><!-- /.box-header -->
                     <div class="box-body">
-	                     <!-- Message. Default to the left -->
+                       <!-- Message. Default to the left -->
                         <div class="direct-chat-msg">
-    	                      <div class="direct-chat-info clearfix">
+                            <div class="direct-chat-info clearfix">
                                 <span class="direct-chat-name pull-left">Komting</span>
                                 <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
                               </div><!-- /.direct-chat-info -->
@@ -624,7 +620,7 @@ $user = mysql_fetch_assoc($query);
                               <div class="direct-chat-text">
                                 Cornell mulai bab 1 sampai bab 9
                               </div><!-- /.direct-chat-text -->
-						            </div><!-- /.direct-chat-msg -->
+                        </div><!-- /.direct-chat-msg -->
                         <button type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> BATAL IKUTI</button>        
                     </div><!-- /.box-body -->
                   </div><!-- /.box -->
@@ -691,10 +687,10 @@ $user = mysql_fetch_assoc($query);
 <script src="plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+<!-- Page Script -->
+<script src="assets/js/myscript.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
 </body>
 </html>
 

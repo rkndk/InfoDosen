@@ -1,0 +1,145 @@
+/* -- main styles ------------------------------------- */
+body {
+  font-family: 'Open Sans', sans-serif;
+  background: #e3e3e3;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: center;
+  /* Internet Explorer 7/8 */
+}
+#enter {
+  width: 280px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+  background-color: #fefefe;
+  -webkit-box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.5);
+  -moz-box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.5);
+  box-shadow: 0px 0px 15px 0px rgba(50, 50, 50, 0.5);
+}
+#judul {
+  padding: 4%;
+  background: #00AEFF;
+  color: #fefefe;
+  text-align: center;
+}
+#content{
+  padding: 30px;
+}
+#footer {
+  height: 3px;
+  width: 100%;
+  background: #00AEFF;
+  color: #fefefe;
+  text-align: center;
+}
+/* -- form styles ----------------------------------- */
+.form-label {
+  margin-bottom: 20px;
+  font-size: 0.9em;
+}.form-label.signup {
+  color: #00AEFF;
+}
+.input-group {
+  display: table;
+  border-collapse: separate;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+.input-field {
+  height: 30px;
+  width: 100%;
+  border: none;
+  text-align: center;
+  font-size: 1em;
+  font-weight: 300;
+}
+/* -- input styles ----------------------------------- */
+#enter form input[type="text"],
+#enter form input[type="email"],
+#enter form input[type="password"] {
+  background-color: rgba(2, 2, 2, 0.07);
+  color: #00AEFF;
+}
+#enter form input[type="text"]:hover,
+#enter form input[type="email"]:hover,
+#enter form input[type="password"]:hover {
+  background-color: #81D4FA;
+  color: #fefefe;
+  outline-color: #00AEFF;
+}
+#enter form input[type="text"]:focus,
+#enter form input[type="email"]:hover,
+#enter form input[type="password"]:focus {
+  background-color: #ecf0f1;
+  color: black;
+  outline-color: #00AEFF;
+}
+#enter form input[type="text"]:valid,
+#enter form input[type="email"]:hover,
+#enter form input[type="password"]:valid {
+  color: #00AEFF;
+  outline-color: #00AEFF;
+}
+#enter form input[type="text"]:invalid,
+#enter form input[type="email"]:hover,
+#enter form input[type="password"]:invalid {
+  outline-color: #F44336;
+}
+/* -- button styles ----------------------------------- */
+.btn-ok {
+  margin-top: 40px;
+  color: #fefefe;
+  background-color: #00AEFF;
+  border-color: #00AEFF;
+}
+.btn-ok:hover,
+.btn-ok:focus,
+.btn-ok:active,
+.btn-ok.active {
+  color: #e9ecee;
+  background-color: #0288D1;
+  border-color: #00AEFF;
+}
+.btn-ok:active,
+.btn-ok.active {
+  background-image: none;
+}
+.btn-ok.disabled,
+.btn-ok[disabled],
+fieldset[disabled] .btn-ok,
+.btn-ok.disabled:hover,
+.btn-ok[disabled]:hover,
+fieldset[disabled] .btn-ok:hover,
+.btn-ok.disabled:focus,
+.btn-ok[disabled]:focus,
+fieldset[disabled] .btn-ok:focus,
+.btn-ok.disabled:active,
+.btn-ok[disabled]:active,
+fieldset[disabled] .btn-ok:active,
+.btn-ok.disabled.active,
+.btn-ok[disabled].active,
+fieldset[disabled] .btn-ok.active {
+  background-color: #428bca;
+  border-color: #00AEFF;
+}
+/* -- placeholder styles ----------------------------------- */
+#enter form ::-webkit-input-placeholder {
+  /* for webkit browsers */
+  text-align: center;
+  color: #555555;
+}
+#enter form :-moz-placeholder {
+  /* for mozilla browsers */
+  text-align: center;
+  color: #555555;
+}
+#enter form .placeholder {
+  text-align: center;
+  color: #555555;
+}
