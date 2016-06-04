@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link href="Email.ico" rel="icon" type="Email.ico">
-  <title>Compose Message</title>
+  <title>Tulis Pesan</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -63,7 +63,7 @@
               <span class="label label-success">4</span>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
+              <li class="header">4 Pesan Belum dibaca</li>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
@@ -73,16 +73,16 @@
                         <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
                       </div>
                       <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                        Tim Pendukung
+                        <small><i class="fa fa-clock-o"></i> 5 menit</small>
                       </h4>
-                      <p>Why not buy a new awesome theme?</p>
+                      
                     </a>
                   </li>
                   <!-- end message -->
                 </ul>
               </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
+              <li class="footer"><a href="#">Lihat Semua Pesan</a></li>
             </ul>
           </li>
          
@@ -106,13 +106,13 @@
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
+                    <a href="#">Pengikut</a>
                   </div>
                   <div class="col-xs-4 text-center">
                     <a href="#">Sales</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
+                    <a href="#">Teman</a>
                   </div>
                 </div>
                 <!-- /.row -->
@@ -123,7 +123,7 @@
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="#" class="btn btn-default btn-flat">Keluar</a>
                 </div>
               </li>
             </ul>
@@ -159,28 +159,31 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
+        <li class="header">NAVIGATION</li>
         <li class="treeview">
           <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+            <i class="fa fa-dashboard"></i> <span>Dashboard</span> 
           </a>
-          <ul class="treeview-menu">
-            <li><a href="../../index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-          </ul>
+          
         </li>
         <li class="treeview active">
           <a href="mailbox.html">
-            <i class="fa fa-envelope"></i> <span>Mailbox</span>
-            <i class="fa fa-angle-left pull-right"></i>
+            <i class="fa fa-envelope"></i> <span>Pesan</span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="mailbox.html">Inbox <span class="label label-primary pull-right">13</span></a></li>
-            <li class="active"><a href="compose.html">Compose</a></li>
-            <li><a href="read-mail.html">Read</a></li>
-          </ul>
+           <li class="treeview">
+          <a href="#">
+            <i class="fa fa-user"></i>
+            <span>Profil Dosen</span>
+          </a>
         </li>
-        <li><a href="../../documentation/index.html"><i class="fa fa-book"></i> <span>Documentation</span></a></li>
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-flag"></i>
+            <span>Tugas</span>
+          </a>
+        </li>
+        <li class="header">CREDITS</li>
+        <li><a href="#"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>  
         
       </ul>
     </section>
@@ -204,7 +207,7 @@
     <section class="content">
       <div class="row">
         <div class="col-md-3">
-          <a href="mailbox.html" class="btn btn-primary btn-block margin-bottom">Back to Inbox</a>
+          <a href="mailbox.html" class="btn btn-primary btn-block margin-bottom">Kembali ke Kotak Masuk</a>
 
           <div class="box box-solid">
             <div class="box-header with-border">
@@ -217,11 +220,11 @@
             </div>
             <div class="box-body no-padding">
               <ul class="nav nav-pills nav-stacked">
-                <li><a href="mailbox.html"><i class="fa fa-inbox"></i> Inbox
+                <li><a href="mailbox.html"><i class="fa fa-inbox"></i> Kotak Masuk
                   <span class="label label-primary pull-right">12</span></a></li>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> Sent</a></li>
-                <li><a href="#"><i class="fa fa-file-text-o"></i> Drafts</a></li>
-                <li><a href="#"><i class="fa fa-inbox"></i> All Mail <span class="label label-warning pull-right">65</span></a>
+                <li><a href="#"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
+                
+                <li><a href="#"><i class="fa fa-inbox"></i> Semua Pesan <span class="label label-warning pull-right">65</span></a>
                 </li>
                 
               </ul>
@@ -249,15 +252,15 @@
         <div class="col-md-9">
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Compose New Message</h3>
+              <h3 class="box-title">Tulis Pesan Baru</h3>
             </div>
             <!-- /.box-header -->
             <div class="box-body">
               <div class="form-group">
-                <input class="form-control" placeholder="To:">
+                <input class="form-control" placeholder="Kepada:">
               </div>
               <div class="form-group">
-                <input class="form-control" placeholder="Subject:">
+                <input class="form-control" placeholder="Subjek:">
               </div>
               <div class="form-group">
                     <textarea id="compose-textarea" class="form-control" style="height: 300px">
@@ -266,7 +269,7 @@
               </div>
               <div class="form-group">
                 <div class="btn btn-default btn-file">
-                  <i class="fa fa-paperclip"></i> Attachment
+                  <i class="fa fa-paperclip"></i> Lampirkan
                   <input type="file" name="attachment">
                 </div>
                 <p class="help-block">Max. 32MB</p>
@@ -275,10 +278,9 @@
             <!-- /.box-body -->
             <div class="box-footer">
               <div class="pull-right">
-                <button type="button" class="btn btn-default"><i class="fa fa-pencil"></i> Draft</button>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Send</button>
+                <button type="submit" class="btn btn-primary"><i class="fa fa-envelope-o"></i> Kirim</button>
               </div>
-              <a href="mailbox.html"><button type="reset" class="btn btn-default"><i class="fa fa-times"></i> Discard</button></a>
+              <a href="mailbox.html"><button type="reset" class="btn btn-default"><i class="fa fa-times"></i>Batal</button></a>
               
             </div>
             <!-- /.box-footer -->
