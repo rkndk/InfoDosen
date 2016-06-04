@@ -85,7 +85,7 @@ $user=$userOnSession
                         Support Team
                         <small><i class="fa fa-clock-o"></i> 5 mins</small>
                       </h4>
-                      <p>Why not buy a new awesome theme?</p>
+                      
                     </a>
                   </li>
                   <!-- end message -->
@@ -95,10 +95,10 @@ $user=$userOnSession
                         <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
                       </div>
                       <h4>
-                        AdminLTE Design Team
+                        Aceh Creative Code Tim
                         <small><i class="fa fa-clock-o"></i> 2 hours</small>
                       </h4>
-                      <p>Why not buy a new awesome theme?</p>
+                      
                     </a>
                   </li>
                   <li>
@@ -110,7 +110,7 @@ $user=$userOnSession
                         Developers
                         <small><i class="fa fa-clock-o"></i> Today</small>
                       </h4>
-                      <p>Why not buy a new awesome theme?</p>
+                      
                     </a>
                   </li>
                   <li>
@@ -122,7 +122,7 @@ $user=$userOnSession
                         Sales Department
                         <small><i class="fa fa-clock-o"></i> Yesterday</small>
                       </h4>
-                      <p>Why not buy a new awesome theme?</p>
+                      
                     </a>
                   </li>
                   <li>
@@ -134,12 +134,12 @@ $user=$userOnSession
                         Reviewers
                         <small><i class="fa fa-clock-o"></i> 2 days</small>
                       </h4>
-                      <p>Why not buy a new awesome theme?</p>
+                      
                     </a>
                   </li>
                 </ul>
               </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
+              <li class="footer"><a href="#">Lihat Semua Pesan</a></li>
             </ul>
           </li>
          
@@ -166,7 +166,7 @@ $user=$userOnSession
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="logout.php" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="logout.php" class="btn btn-default btn-flat">Keluar</a>
                 </div>
               </li>
             </ul>
