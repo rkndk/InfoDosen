@@ -31,3 +31,15 @@
       }
     );
   }
+
+  function unsubscibe(id){
+  	$.post("subscribe.php",
+      {
+          tipe: "unsubscribe",
+          id: id
+      },
+      function(data, status){
+          window.location.href="index.php";
+      }
+    );
+  }

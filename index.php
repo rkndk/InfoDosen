@@ -146,14 +146,14 @@ $user=$userOnSession
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="dist/img/1.jpg" class="user-image" alt="User Image">
+              <img src="dist/img/<?php echo $user['foto'] ?>" class="user-image" alt="User Image">
               <span class="hidden-xs"><?php echo $user['nama'];?></span>
               <i class="fa fa-sort-down pull-right"></i>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="dist/img/1.jpg" class="img-circle" alt="User Image">
+                <img src="dist/img/<?php echo $user['foto'] ?>" class="img-circle" alt="User Image">
 
                 <p>
                   <?php echo $user['nama'];?>
@@ -182,7 +182,7 @@ $user=$userOnSession
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="dist/img/1.jpg" class="img-circle" alt="User Image">
+          <img src="dist/img/<?php echo $user['foto'] ?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p><?php echo $user['nama'];?></p>
@@ -268,21 +268,51 @@ $user=$userOnSession
                </div><!-- /.box-header -->
                <div class="box-body">
                   <p>Hai <b><?php echo $user['nama'];?></b>, Anda dipilih sebagai Komisaris Leting untuk mengelola mata kuliah berikut.</p>
-                  <div class="col-md-6">
-                      <a href="#" class="btn btn-danger" style="width: 100%;">Pemograman</a><br><br>
-                      <a href="#" class="btn btn-danger" style="width: 100%;">Pemograman Berbasis Web</a><br><br>
-                      <a href="#" class="btn btn-danger" style="width: 100%;">Jaringan Komputer</a> <br><br>
+                  <div class="col-md-12">
+                      <?php 
+                        $sql = "select * from matakuliah where komting='".$user['nim']."'";
+                        $sqla=mysql_query($sql);
+                        while($data = mysql_fetch_array($sqla)) {
+                            echo '
+                            <div class="box box-solid box-primary collapsed-box">
+                              <div class="box-header with-border">
+                                <h3 class="box-title">'.$data['nama'].'</h3>
+                                <div class="box-tools pull-right">
+                                  <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+                                </div><!-- /.box-tools -->
+                              </div><!-- /.box-header -->
+                              <div class="box-body">
+                                <div class="col-md-12 hresize">
+                                    <p>Mengirim informasi ke Mata Kuliah '.$data['nama'].'</p>
+                                    <textarea class="form-control hresize" id="encJs2"></textarea><br>
+                                    <button type="button" class="btn btn-primary pull-right"><i class="fa fa-send"></i> KIRIM</button><br><br>
+                                </div>
+                              </div><!-- /.box-body -->
+                            </div><!-- /.box -->';
+                        }
+                      ?>
+
+                      
                   </div>
-                  <div class="col-md-6 hresize" style="background: #EEEEEE; padding: 1%; border-radius: 5px;">
-                      <p>Mengirim informasi ke Mata Kuliah <span class="label label-primary">Pemograman</span></p>
-                      <textarea class="form-control hresize" id="encJs2"></textarea><br>
-                      <button type="button" class="btn btn-primary pull-right"><i class="fa fa-send"></i> KIRIM</button><br><br>
-                  </div>
-                  
                </div><!-- /.box-body -->
             </div><!-- /.box -->
             <!-- /.Paneal Komting -->
 
+
+            <?php
+              $sql = "select status from dosen";
+              $sqla=mysql_query($sql);
+              $total = mysql_num_rows($sqla);
+              $sql = "select status from dosen where status='AVAILABLE'";
+              $sqla=mysql_query($sql);
+              $available = mysql_num_rows($sqla);
+              $sql = "select status from dosen where status='UNAVAILABLE'";
+              $sqla=mysql_query($sql);
+              $unavailable = mysql_num_rows($sqla);
+              $sql = "select status from dosen where status='BUSY'";
+              $sqla=mysql_query($sql);
+              $busy = mysql_num_rows($sqla);
+            ?>
             <!-- Dosen Available Status -->
             <div class="box box-solid box-info">
               <div class="box-header">
@@ -293,17 +323,17 @@ $user=$userOnSession
               <div class="box-footer no-border">
                 <div class="row">
                 <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="text" class="knob" data-readonly="true" value="70" data-width="60" data-height="60" data-fgColor="#39CCCC">
+                  <input type="hidden" class="knob" data-readonly="true" value="<?php echo $available/$total*100 ?>" data-width="60" data-height="60" data-fgColor="#00a65a">
                   <div class="knob-label"><i class="fa fa-circle text-green"></i>  AVAILABLE</div>
                 </div>
                 <!-- ./col -->
                 <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="text" class="knob" data-readonly="true" value="10" data-width="60" data-height="60" data-fgColor="#39CCCC">
+                  <input type="hidden" class="knob" data-readonly="true" value="<?php echo $busy/$total*100 ?>" data-width="60" data-height="60" data-fgColor="#f39c12">
                   <div class="knob-label"><i class="fa fa-circle text-yellow"></i>  BUSY</div>
                 </div>
                 <!-- ./col -->
                 <div class="col-xs-4 text-center">
-                  <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60" data-fgColor="#39CCCC">
+                  <input type="hidden" class="knob" data-readonly="true" value="<?php echo $unavailable/$total*100 ?>" data-width="60" data-height="60" data-fgColor="#dd4b39">
                   <div class="knob-label"><i class="fa fa-circle text-red"></i>  UNAVAILABLE</div>
                 </div>
                 <!-- ./col -->
@@ -325,9 +355,8 @@ $user=$userOnSession
               <!-- /.box-body -->
               <div class="box-body">
                 <?php
-                  $haha = "select * from favorit RIGHT JOIN dosen on favorit.nim='".$user['nim']."' AND favorit.nip=dosen.nip where nim='".$user['nim']."'";
-                  $sql="select * from dosen";
-                  $sqla=mysql_query($haha);
+                  $sql = "select * from favorit RIGHT JOIN dosen on favorit.nim='".$user['nim']."' AND favorit.nip=dosen.nip where nim='".$user['nim']."'";
+                  $sqla=mysql_query($sql);
                   while($data = mysql_fetch_array($sqla)) {
                     echo ' 
                           <section id="'.$data["nip"].'" class="col-md-6">
@@ -344,9 +373,15 @@ $user=$userOnSession
                               <div class="box-footer">
                                 <div class="row">
                                   <div class="col-sm-12">
-                                    <div class="description-block">
-                                    <i class="fa fa-circle text-green"></i>
-                                    <span class="description-text">available</span>
+                                    <div class="description-block">';
+                                    
+                                    switch($data['status']){
+                                      case 'AVAILABLE': echo '<i class="fa fa-circle text-green"></i>'; break;
+                                      case 'UNAVAILABLE': echo '<i class="fa fa-circle text-red"></i>'; break;
+                                      case 'BUSY': echo '<i class="fa fa-circle text-yellow"></i>'; break;
+                                    }
+                                    echo '
+                                    <span class="description-text">'.$data['status'].'</span>
                                     </div>
                                     <!-- /.description-block -->
                                   </div>
@@ -410,9 +445,8 @@ $user=$userOnSession
                 
                 
                 <?php
-                  $haha = "select * from favorit RIGHT JOIN dosen on favorit.nim='".$user['nim']."' AND favorit.nip=dosen.nip";
-                  $sql="select * from dosen";
-                  $sqla=mysql_query($haha);
+                  $sql = "select * from favorit RIGHT JOIN dosen on favorit.nim='".$user['nim']."' AND favorit.nip=dosen.nip";
+                  $sqla=mysql_query($sql);
                   while($data = mysql_fetch_array($sqla)) {
                     echo ' 
                           <section id="'.$data["nip"].'" class="col-md-6">
@@ -429,9 +463,15 @@ $user=$userOnSession
                               <div class="box-footer">
                                 <div class="row">
                                   <div class="col-sm-12">
-                                    <div class="description-block">
-                                    <i class="fa fa-circle text-green"></i>
-                                    <span class="description-text">available</span>
+                                    <div class="description-block">';
+                                    
+                                    switch($data['status']){
+                                      case 'AVAILABLE': echo '<i class="fa fa-circle text-green"></i>'; break;
+                                      case 'UNAVAILABLE': echo '<i class="fa fa-circle text-red"></i>'; break;
+                                      case 'BUSY': echo '<i class="fa fa-circle text-yellow"></i>'; break;
+                                    }
+                                    echo '
+                                    <span class="description-text">'.$data['status'].'</span>
                                     </div>
                                     <!-- /.description-block -->
                                   </div>
@@ -475,7 +515,7 @@ $user=$userOnSession
                           </section>';
                   }
                 ?>
-                
+
               </div>
               <!-- /.box-body -->
             </div>
@@ -548,83 +588,64 @@ $user=$userOnSession
               <h3 class="box-title">Informasi Matakuliah</h3>
             </div><!-- /.box-header -->
             <div class="box-body">
-            
-              <div class="col-md-12">
-                  <div class="box box-info" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Pemograman berbasis Web</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                       <!-- Message. Default to the left -->
-                         <div class="direct-chat-msg">
-                            <div class="direct-chat-info clearfix">
-                                <span class="direct-chat-name pull-left">Dosen</span>
-                                <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
-                              </div><!-- /.direct-chat-info -->
-                              <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
-                              <div class="direct-chat-text">
-                                Perkuliahan hari ini mengenai PHP
-                              </div><!-- /.direct-chat-text -->
-                          </div><!-- /.direct-chat-msg -->
-                                
-                        <div class="direct-chat-msg">
-                              <div class="direct-chat-info clearfix">
-                                <span class="direct-chat-name pull-left">Komting</span>
-                                <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
-                              </div><!-- /.direct-chat-info -->
-                              <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
-                              <div class="direct-chat-text">
-                                Akan diadakan jam tambahan pada minggu depan
-                              </div><!-- /.direct-chat-text -->
-                        </div><!-- /.direct-chat-msg -->
-                        <button type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> BATAL IKUTI</button>
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-                </div>
-                
-                <div class="col-md-12">
-                  <div class="box box-info" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Jaringan Komputer</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                       <!-- Message. Default to the left -->
-                         <div class="direct-chat-msg">
-                            <div class="direct-chat-info clearfix">
-                                <span class="direct-chat-name pull-left">Dosen</span>
-                                <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
-                              </div><!-- /.direct-chat-info -->
-                              <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
-                              <div class="direct-chat-text">
-                                Pelajari tentang topologi jaringan
-                              </div><!-- /.direct-chat-text -->
-                          </div><!-- /.direct-chat-msg -->
-                          <button type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> BATAL IKUTI</button>     
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-                </div>
-                
-                <div class="col-md-12">
-                  <div class="box box-info" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
-                    <div class="box-header with-border">
-                      <h3 class="box-title">Rekayasa Perangkat Lunak</h3>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                       <!-- Message. Default to the left -->
-                        <div class="direct-chat-msg">
-                            <div class="direct-chat-info clearfix">
-                                <span class="direct-chat-name pull-left">Komting</span>
-                                <span class="direct-chat-timestamp pull-right">23 Jan 2:00 pm</span>
-                              </div><!-- /.direct-chat-info -->
-                              <img class="direct-chat-img" src="dist/img/user1-128x128.jpg" alt="message user image"><!-- /.direct-chat-img -->
-                              <div class="direct-chat-text">
-                                Cornell mulai bab 1 sampai bab 9
-                              </div><!-- /.direct-chat-text -->
-                        </div><!-- /.direct-chat-msg -->
-                        <button type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> BATAL IKUTI</button>        
-                    </div><!-- /.box-body -->
-                  </div><!-- /.box -->
-                </div>
+
+
+
+              <?php
+                  $sql = "select * from subscribe RIGHT JOIN matakuliah on subscribe.pelajaran=matakuliah.idpelajaran where nim='".$user['nim']."'";
+                  $sqla=mysql_query($sql);
+                  while($data = mysql_fetch_array($sqla)) {
+                    $pengajar = mysql_fetch_assoc(mysql_query("select * from dosen where nip = '".$data['pengajar']."'"));
+                    $komting = mysql_fetch_assoc(mysql_query("select * from mahasiswa where nim = '".$data['komting']."'"));
+                            echo ' 
+                            <div class="col-md-12">
+                              <div class="box box-info" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
+                                <div class="box-header with-border">
+                                  <h3 class="box-title">'.
+
+                                  $data['nama'].
+
+                                  '</h3>
+                                </div><!-- /.box-header -->
+                                <div class="box-body">';
+                                if(!empty($data['pesandosen'])){
+                                  echo '
+                                     <!-- Message. Default to the left -->
+                                       <div class="direct-chat-msg">
+                                          <div class="direct-chat-info clearfix">
+                                              <span class="direct-chat-name pull-left">Dosen</span>
+                                              <span class="direct-chat-timestamp pull-right">'.$data['tanggaldosen'].'</span>
+                                            </div><!-- /.direct-chat-info -->
+                                            <img class="direct-chat-img" src="dist/img/'.$pengajar['foto'].'" alt="message user image"><!-- /.direct-chat-img -->
+                                            <div class="direct-chat-text">'.
+                                              $data['pesandosen'].
+                                            '</div><!-- /.direct-chat-text -->
+                                        </div><!-- /.direct-chat-msg -->';
+                                    }
+                                  if(!empty($data['pesankomting'])){
+                                  echo '         
+                                    <div class="direct-chat-msg">
+                                          <div class="direct-chat-info clearfix">
+                                            <span class="direct-chat-name pull-left">Komting</span>
+                                            <span class="direct-chat-timestamp pull-right">'.$data['tanggalkomting'].'</span>
+                                          </div><!-- /.direct-chat-info -->
+                                          <img class="direct-chat-img" src="dist/img/'.$komting['foto'].'" alt="message user image"><!-- /.direct-chat-img -->
+                                          <div class="direct-chat-text">'.
+                                            $data['pesankomting'].
+                                          '</div><!-- /.direct-chat-text -->
+                                    </div><!-- /.direct-chat-msg -->';
+                                  }
+                                    echo '
+                                    <button type="button" onclick="unsubscibe('.$data['id'].')" class="btn btn-danger pull-right"><i class="fa fa-close"></i> BATAL IKUTI</button>
+                                </div><!-- /.box-body -->
+                              </div><!-- /.box -->
+                            </div>';
+                  }
+                ?>
+
+
+
+
               
             </div><!-- /.box-body -->
           </div><!-- /.box -->
