@@ -15,11 +15,30 @@
   <!-- iCheck -->
   <link rel="stylesheet" href="../plugins/iCheck/square/blue.css">
 
+  <style type="text/css">
+        body {            
+            background-image:   
+              url(../bg0.png); 
+            background-repeat: repeat-x;         
+            animation: backgroundScroll 3999990s linear infinite;
+            }
+
+              @-webkit-keyframes backgroundScroll {
+                from {background-position: 0 0;}
+                to {background-position: 99999999px 0;}
+                }
+
+                @keyframes backgroundScroll {
+                from {background-position: 0 0;}
+                to {background-position: 99999999px 0;}
+                }                
+    </style>
+
 </head>
-<body class="hold-transition register-page">
+<body>
 <div class="register-box">
   <div class="register-logo">
-    <a href="#"><i class="fa fa-user-plus"></i><b> Daftar</b> Mahasiswa</a>
+    <a href="#"><i class="fa fa-user-plus text-blue"></i><b> Daftar</b> Mahasiswa</a>
   </div>
 
   <div class="register-box-body">
@@ -84,7 +103,7 @@
 
     
 
-    <a href="login.html" class="text-center">I already have a membership</a>
+    <a href="../login.php" class="text-center">I already have a membership</a>
   </div>
   <!-- /.form-box -->
 </div>
