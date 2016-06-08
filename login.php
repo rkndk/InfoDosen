@@ -129,8 +129,9 @@
       </div>
     </form>
     <br>
-    Belum memiliki akun?<a href="page/daftarmaha.html"> <b>DAFTAR</b></a>
+    Belum memiliki akun?<a href="page/daftarmaha.html"> <b>DAFTAR</b></a><br>
 
+    Lupa Password? Klik<a href="page/lupapass.html"> <b>Disini</b></a>
   </div>
   <!-- /.login-box-body -->
 </div>
