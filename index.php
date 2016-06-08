@@ -1,7 +1,7 @@
 <?php
 include "session.php";
 include "koneksi.php";
-$user=$userOnSession
+$user=$userOnSession;
 ?>
 
 <!DOCTYPE html>
@@ -50,7 +50,7 @@ $user=$userOnSession
 
   <header class="main-header">
     <!-- Logo -->
-    <a href="index2.html" class="logo">
+    <a href="index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>H</b>JD</span>
       <!-- logo for regular state and mobile devices -->
@@ -63,80 +63,61 @@ $user=$userOnSession
         <span class="sr-only">Toggle navigation</span>
       </a>
 
+
+      <?php
+        $sql = "select * from pesan where penerima='".$user['nim']."' AND status='UNREAD'";
+        $sqla=mysql_query($sql);
+        $jumlahUNREAD=mysql_num_rows($sqla);
+      ?>
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
           <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
-              <span class="label label-danger">4</span>
+              <?php
+                if($jumlahUNREAD>0){
+                  echo '<span class="label label-danger">'.$jumlahUNREAD.'</span>';
+                }
+              ?>
             </a>
             <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
+              <li class="header">Kamu punya <?php echo $jumlahUNREAD ?> pesan yang belum dibaca</li>
               <li>
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/1.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      
-                    </a>
-                  </li>
-                  <!-- end message -->
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Aceh Creative Code Tim
-                        <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                      </h4>
-                      
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Developers
-                        <small><i class="fa fa-clock-o"></i> Today</small>
-                      </h4>
-                      
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user3-128x128.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Sales Department
-                        <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                      </h4>
-                      
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="dist/img/user4-128x128.jpg" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Reviewers
-                        <small><i class="fa fa-clock-o"></i> 2 days</small>
-                      </h4>
-                      
-                    </a>
-                  </li>
+                  <?php
+                    $sql = "select * from pesan where penerima='".$user['nim']."' ORDER BY status DESC";
+                    $sqla=mysql_query($sql);
+                    for($i=0; ($data = mysql_fetch_array($sqla))&&$i<5; $i++) {
+                      $sqlpengirim = mysql_query("select * from mahasiswa where nim='".$data['pengirim']."'");
+                      if(mysql_num_rows($sqlpengirim)<=0){
+                        $sqlpengirim = mysql_query("select * from dosen where nip='".$data['pengirim']."'");
+                      }
+                      $pengirim = mysql_fetch_assoc($sqlpengirim);
+                      $date = date_create($data['tanggal']);
+                      $tanggalkirim= date_format($date,"d M Y");
+                      $subject= substr($data['subject'],0,30);
+                      if($data['status']=="UNREAD"){
+                        echo '<li style="background: #FFEBEE">';
+                      }
+                      else{
+                        echo '<li>';
+                      }
+                      echo '
+                        <a href="#">
+                          <div class="pull-left">
+                            <img src="dist/img/'.$pengirim['foto'].'" class="img-circle" alt="User Image">
+                          </div>
+                          <h4>
+                            '.$pengirim['nama'].'
+                            <small><i class="fa fa-clock-o"></i> '.$tanggalkirim.'</small>
+                          </h4>
+                          <p>'.$subject.'</p>
+                        </a>
+                      </li>';
+                    }
+                  ?>
                 </ul>
               </li>
               <li class="footer"><a href="#">Lihat Semua Pesan</a></li>
@@ -204,13 +185,13 @@ $user=$userOnSession
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
         <li class="active treeview">
-          <a href="index.html">
+          <a href="index.php">
             <i class="fa fa-dashboard"></i>
             <span>Dashboard</span>
           </a>
         </li>
         <li class="treeview">
-          <a href="#">
+          <a href="mailbox.php">
             <i class="fa fa-envelope"></i>
             <span>Pesan</span>
           </a>
@@ -251,28 +232,35 @@ $user=$userOnSession
     <!-- Main content -->
     <section class="content">
       <!-- Main row -->
+      <!-- Pemberitahuan
       <div class="row col-md-12 center-block">              
-      <div class="callout callout-info lead">
+        <div class="callout callout-info lead">
             <h4>Pemberitahuan!</h4>
             <p>Program sistem informasi kamunitas akademik berbasis web.</p>
         </div>
       </div>
+      -->
       <div class="row">
         <!-- Left col -->
         <section class="col-md-8">
-            <!-- Paneal Komting -->
-            <div class="box box-solid box-info">
-               <div class="box-header">
-                  <i class="fa fa-cogs"></i>
-                  <h3 class="box-title">Panel Komting</h3>
-               </div><!-- /.box-header -->
-               <div class="box-body">
-                  <p>Hai <b><?php echo $user['nama'];?></b>, Anda dipilih sebagai Komisaris Leting untuk mengelola mata kuliah berikut.</p>
-                  <div class="col-md-12">
-                      <?php 
-                        $sql = "select * from matakuliah where komting='".$user['nim']."'";
-                        $sqla=mysql_query($sql);
-                        while($data = mysql_fetch_array($sqla)) {
+            <?php
+              $sql = "select komting from matakuliah where komting='".$user['nim']."'";
+              $sqla=mysql_query($sql);
+              $row=mysql_num_rows($sqla);
+              if($row>0){
+                $sql = "select * from matakuliah where komting='".$user['nim']."'";
+                $sqla=mysql_query($sql);
+                echo '
+                  <!-- Paneal Komting -->
+                  <div class="box box-solid box-info">
+                     <div class="box-header">
+                        <i class="fa fa-cogs"></i>
+                        <h3 class="box-title">Panel Komting</h3>
+                     </div><!-- /.box-header -->
+                     <div class="box-body">
+                        <p>Hai <b>'.$user['nama'].'</b>, Anda dipilih untuk mengelola mata kuliah berikut.</p>
+                        <div class="col-md-12">';
+                while($data = mysql_fetch_array($sqla)) {
                             echo '
                             <div class="box box-solid box-primary collapsed-box">
                               <div class="box-header with-border">
@@ -284,19 +272,30 @@ $user=$userOnSession
                               <div class="box-body">
                                 <div class="col-md-12 hresize">
                                     <p>Mengirim informasi ke Mata Kuliah '.$data['nama'].'</p>
-                                    <textarea class="form-control hresize" id="encJs2"></textarea><br>
-                                    <button type="button" class="btn btn-primary pull-right"><i class="fa fa-send"></i> KIRIM</button><br><br>
-                                </div>
+                                    <textarea required id="textarea'.$data['idpelajaran'].'" class="form-control hresize"></textarea><br>
+                                    <button onclick="updateinfo('.$data['idpelajaran'].')" type="button" class="btn btn-primary pull-right"><i class="fa fa-send"></i> KIRIM</button><br><br>
+                                </div>';
+                              if(!empty($data['pesankomting'])){
+                                echo '
+                                <div class="col-md-12 hresize">
+                                    <p>Pesan sebelumnya</p>
+                                    <textarea required id="textarea'.$data['idpelajaran'].'" class="form-control hresize" disabled>'.$data['pesankomting'].'</textarea><br>
+                                    <button onclick="hapusinfo('.$data['idpelajaran'].')" type="button" class="btn btn-danger pull-right"><i class="fa fa-close"></i> HAPUS</button><br><br>
+                                </div>';
+                              }
+                              echo '
                               </div><!-- /.box-body -->
                             </div><!-- /.box -->';
-                        }
-                      ?>
+                }
+                echo '
+                        </div>
+                     </div><!-- /.box-body -->
+                  </div><!-- /.box -->
+                  <!-- /.Paneal Komting -->';
+              }
+            ?>
 
-                      
-                  </div>
-               </div><!-- /.box-body -->
-            </div><!-- /.box -->
-            <!-- /.Paneal Komting -->
+            
 
 
             <?php
@@ -322,21 +321,21 @@ $user=$userOnSession
               <!-- /.box-body -->
               <div class="box-footer no-border">
                 <div class="row">
-                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="hidden" class="knob" data-readonly="true" value="<?php echo $available/$total*100 ?>" data-width="60" data-height="60" data-fgColor="#00a65a">
-                  <div class="knob-label"><i class="fa fa-circle text-green"></i>  AVAILABLE</div>
-                </div>
-                <!-- ./col -->
-                <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
-                  <input type="hidden" class="knob" data-readonly="true" value="<?php echo $busy/$total*100 ?>" data-width="60" data-height="60" data-fgColor="#f39c12">
-                  <div class="knob-label"><i class="fa fa-circle text-yellow"></i>  BUSY</div>
-                </div>
-                <!-- ./col -->
-                <div class="col-xs-4 text-center">
-                  <input type="hidden" class="knob" data-readonly="true" value="<?php echo $unavailable/$total*100 ?>" data-width="60" data-height="60" data-fgColor="#dd4b39">
-                  <div class="knob-label"><i class="fa fa-circle text-red"></i>  UNAVAILABLE</div>
-                </div>
-                <!-- ./col -->
+                  <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                    <input type="hidden" class="knob" data-readonly="true" value="<?php echo $available/$total*100 ?>" data-width="65" data-height="65" data-fgColor="#00a65a">
+                    <div class="knob-label"><i class="fa fa-circle text-green"></i>  AVAILABLE</div>
+                  </div>
+                  <!-- ./col -->
+                  <div class="col-xs-4 text-center" style="border-right: 1px solid #f4f4f4">
+                    <input type="hidden" class="knob" data-readonly="true" value="<?php echo $busy/$total*100 ?>" data-width="65" data-height="65" data-fgColor="#f39c12">
+                    <div class="knob-label"><i class="fa fa-circle text-yellow"></i>  BUSY</div>
+                  </div>
+                  <!-- ./col -->
+                  <div class="col-xs-4 text-center">
+                    <input type="hidden" class="knob" data-readonly="true" value="<?php echo $unavailable/$total*100 ?>" data-width="65" data-height="65" data-fgColor="#dd4b39">
+                    <div class="knob-label"><i class="fa fa-circle text-red"></i>  UNAVAILABLE</div>
+                  </div>
+                  <!-- ./col -->
                 </div>
                 <!-- /.row -->
               </div>
@@ -345,19 +344,21 @@ $user=$userOnSession
             <!-- /.box --> 
 
 
-
-            <!-- Dosen Favorite -->
-            <div class="box box-solid box-info">
-              <div class="box-header">
-                <i class="fa fa-star"></i>
-                <h3 class="box-title">Favorit</h3>
-              </div>
-              <!-- /.box-body -->
-              <div class="box-body">
-                <?php
-                  $sql = "select * from favorit RIGHT JOIN dosen on favorit.nim='".$user['nim']."' AND favorit.nip=dosen.nip where nim='".$user['nim']."'";
-                  $sqla=mysql_query($sql);
-                  while($data = mysql_fetch_array($sqla)) {
+            <?php
+              $sql = "select * from favorit RIGHT JOIN dosen on favorit.nim='".$user['nim']."' AND favorit.nip=dosen.nip where nim='".$user['nim']."'";
+              $sqla=mysql_query($sql);
+              if(mysql_num_rows($sqla)>0){
+                echo '
+                  <!-- Dosen Favorite -->
+                  <div class="box box-solid box-info">
+                    <div class="box-header">
+                      <i class="fa fa-star"></i>
+                      <h3 class="box-title">Favorit</h3>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-body">
+                ';
+                while($data = mysql_fetch_array($sqla)) {
                     echo ' 
                           <section id="'.$data["nip"].'" class="col-md-6">
                               <!-- Widget: user widget style 1 -->
@@ -423,13 +424,15 @@ $user=$userOnSession
                             </div>
                               <!-- /.widget-user -->
                           </section>';
-                  }
-                ?>
-                
-              </div>
-              <!-- /.box-body -->
-            </div>
-            <!-- /.box --> 
+                }
+                echo '
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <!-- /.box --> 
+                ';
+              }
+            ?>
 
 
       
@@ -540,40 +543,60 @@ $user=$userOnSession
             </div>
             <!-- /.box-header -->
             <div class="box-body">
-              <ul class="todo-list">
+              <ul id="listcatatan" class="todo-list">
+                
+                  <?php
+                    $sql = "select * from catatan where pembuat='".$user['nim']."'";
+                    $sqla=mysql_query($sql);
+                    while($data = mysql_fetch_array($sqla)) {
+                      echo '
+                      <li>
+                        <div id="catatan'.$data['idcatatan'].'">
+                          <!-- drag handle -->
+                              <span class="handle">
+                                <i class="fa fa-ellipsis-v"></i>
+                                <i class="fa fa-ellipsis-v"></i>
+                              </span>
+                          <!-- todo text -->
+                          <span id="teks'.$data['idcatatan'].'" class="text">'.$data['catatan'].'</span>
+                          <!-- General tools such as edit or delete-->
+                          <div class="tools">
+                            <i onclick="editlist('.$data['idcatatan'].')" class="fa fa-edit"></i>
+                            <i onclick="hapuslist('.$data['idcatatan'].')" class="fa fa-trash-o"></i>
+                          </div>
+                        </div>
+                        <div id="editcatatan'.$data['idcatatan'].'" style="display: none;">
+                          <div class="input-group">
+                            <input id="inputcatatan'.$data['idcatatan'].'" type="text" name="edit" class="form-control" placeholder="Edit" value="'.$data['catatan'].'">
+                                <span class="input-group-btn">
+                                  <button onclick="simpanEdit('.$data['idcatatan'].')" type="button" name="simpanEdit" id="submitEdit" class="btn btn-flat"><i class="fa fa-pencil"></i>
+                                  </button>
+                                  <button onclick="batalEdit('.$data['idcatatan'].')" type="button" name="batalEdit" id="batalEdit" class="btn btn-flat"><i class="fa fa-close"></i>
+                                  </button>
+                                </span>
+                          </div>
+                        </div>
+                      </li>';
+                    }
+                  ?>
+              </ul><br>
+              <ul class="todo-list" id="tambahcatatan" style="display: none;">
                 <li>
-                  <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                  <!-- todo text -->
-                  <span class="text">Mebuat cornell note</span>
-                  <!-- General tools such as edit or delete-->
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
-                  </div>
-                </li>
-                <li>
-                  <!-- drag handle -->
-                      <span class="handle">
-                        <i class="fa fa-ellipsis-v"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                      </span>
-                  <!-- todo text -->
-                  <span class="text">Presentasi Project</span>
-                  <!-- General tools such as edit or delete-->
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
-                  </div>
+                    <div class="input-group">
+                        <input id="input-tambahcatatan" type="text" name="input-tambahcatatan" class="form-control" placeholder="Tambah Catatan">
+                        <span class="input-group-btn">
+                          <button onclick="tambahcatatan()" type="button" class="btn btn-flat"><i class="fa fa-plus"></i>
+                          </button>
+                          <button onclick="bataltambah()" type="button" class="btn btn-flat"><i class="fa fa-close"></i>
+                          </button>
+                        </span>
+                    </div>  
                 </li>
               </ul>
             </div>
             <!-- /.box-body -->
             <div class="box-footer clearfix no-border">
-              <button type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
+              <button onclick="catatanbaru()" type="button" class="btn btn-default pull-right"><i class="fa fa-plus"></i> Add item</button>
             </div>
           </div>
           <!-- /.box -->
@@ -597,6 +620,10 @@ $user=$userOnSession
                   while($data = mysql_fetch_array($sqla)) {
                     $pengajar = mysql_fetch_assoc(mysql_query("select * from dosen where nip = '".$data['pengajar']."'"));
                     $komting = mysql_fetch_assoc(mysql_query("select * from mahasiswa where nim = '".$data['komting']."'"));
+                    $date = date_create($data['tanggaldosen']);
+                    $tanggaldosen= date_format($date,"d M Y");
+                    $date = date_create($data['tanggalkomting']);
+                    $tanggalkomting= date_format($date,"d M Y");
                             echo ' 
                             <div class="col-md-12">
                               <div class="box box-info" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
@@ -614,7 +641,7 @@ $user=$userOnSession
                                        <div class="direct-chat-msg">
                                           <div class="direct-chat-info clearfix">
                                               <span class="direct-chat-name pull-left">Dosen</span>
-                                              <span class="direct-chat-timestamp pull-right">'.$data['tanggaldosen'].'</span>
+                                              <span class="direct-chat-timestamp pull-right">'.$tanggaldosen.'</span>
                                             </div><!-- /.direct-chat-info -->
                                             <img class="direct-chat-img" src="dist/img/'.$pengajar['foto'].'" alt="message user image"><!-- /.direct-chat-img -->
                                             <div class="direct-chat-text">'.
@@ -627,7 +654,7 @@ $user=$userOnSession
                                     <div class="direct-chat-msg">
                                           <div class="direct-chat-info clearfix">
                                             <span class="direct-chat-name pull-left">Komting</span>
-                                            <span class="direct-chat-timestamp pull-right">'.$data['tanggalkomting'].'</span>
+                                            <span class="direct-chat-timestamp pull-right">'.$tanggalkomting.'</span>
                                           </div><!-- /.direct-chat-info -->
                                           <img class="direct-chat-img" src="dist/img/'.$komting['foto'].'" alt="message user image"><!-- /.direct-chat-img -->
                                           <div class="direct-chat-text">'.
@@ -709,9 +736,11 @@ $user=$userOnSession
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
 <!-- Page Script -->
-<script src="assets/js/myscript.js"></script>
+<script src="assets/js/dashboard-mahasiswa.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="dist/js/demo.js"></script>
 </body>
 </html>
 
