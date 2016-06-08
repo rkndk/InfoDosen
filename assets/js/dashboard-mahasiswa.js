@@ -32,7 +32,7 @@
   }
 
   function unsubscibe(id){
-  	$.post("subscribe.php",
+  	$.post("../subscribe.php",
       {
           tipe: "unsubscribe",
           id: id
@@ -46,7 +46,7 @@
   function updateinfo(idpelajaran){
     var pesan = $('textarea#textarea'+idpelajaran).val();
     if(pesan!=""){
-      $.post("informasi.php",
+      $.post("../informasi.php",
         {
             tipe: "update",
             pengirim: "komting",
@@ -64,7 +64,7 @@
   }
 
   function hapusinfo(idpelajaran){
-    $.post("informasi.php",
+    $.post("../informasi.php",
         {
             tipe: "hapus",
             pengirim: "komting",
@@ -177,4 +177,28 @@
     else{
       document.getElementById('input-tambahcatatan').style.borderColor="red";
     }
+  }
+
+  function hapussubscribe(id){
+    $.post("../subscribe.php",
+      {
+          tipe: "unsubscribe",
+          id: id
+      },
+      function(data, status){
+          window.location.href="index.php";
+      }
+    );
+  }
+
+  function acceptsubscribe(id){
+    $.post("../subscribe.php",
+      {
+          tipe: "accept",
+          id: id
+      },
+      function(data, status){
+          window.location.href="index.php";
+      }
+    );
   }

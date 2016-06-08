@@ -1,7 +1,7 @@
 <?php
 // Memulai Session
 session_start();
-if(!isset($_SESSION['user'])){
+if(!isset($_SESSION['user'])||!isset($_SESSION['level'])){
 	header('Location: login.php');
 }
 else{
@@ -13,7 +13,12 @@ else{
 	// user cek
 	$userCheck = $_SESSION['user'];
 	// Ambil username dengan mysql_fetch_assoc
-	$ses_sql=mysql_query("select * from mahasiswa where nim='$userCheck'", $connection);
+	if($_SESSION['level']=="mahasiswa"){
+		$ses_sql=mysql_query("select * from mahasiswa where nim='$userCheck'", $connection);
+	}
+	else if ($_SESSION['level']=="dosen") {
+		$ses_sql=mysql_query("select * from dosen where nip='$userCheck'", $connection);
+	}
 	$userOnSession = mysql_fetch_assoc($ses_sql);
 }
 ?>

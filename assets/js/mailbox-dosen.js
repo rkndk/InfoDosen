@@ -50,7 +50,7 @@ $(function () {
   });
 
   function favoritpesan(tipe, id) { 
-    $.post("pesan.php",
+    $.post("../pesan.php",
       {
           tipe: tipe,
           id: id
@@ -71,10 +71,22 @@ $(function () {
         selected.push($(this).closest('tr').attr('id'));
     });
 
-    $.post("pesan.php",
+    $.post("../pesan.php",
       {
           tipe: "hapus",
           id: selected
+      },
+      function(data, status){
+          window.location.href="mailbox.php";
+      }
+    );
+  }
+
+  function hapuspesan(id){
+    $.post("../pesan.php",
+      {
+          tipe: "hapus",
+          id: id
       },
       function(data, status){
           window.location.href="mailbox.php";

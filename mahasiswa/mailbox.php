@@ -1,47 +1,21 @@
 <?php
-include "session.php";
-include "koneksi.php";
+include "../session.php";
+include "../koneksi.php";
+if($_SESSION['level']!="mahasiswa"){
+  header('Location: ../login.php');
+}
 $user=$userOnSession;
-if(!isset($_GET['id'])||empty($_GET['id'])){            
-  header("location: mailbox.php");
-}
-$idpesan=$_GET['id'];
-$pengirimpesan=array();
-$penerimapesan=array();
-$pesan=array();
-
-
-$sqla=mysql_query("select * from pesan where idpesan=".$idpesan." AND (pengirim='".$user['nim']."' OR penerima='".$user['nim']."')");
-if(mysql_num_rows($sqla)<=0){
-  header("location: mailbox.php");
-}
-$sqla=mysql_query("select * from pesan where idpesan=".$idpesan." AND penerima='".$user['nim']."'");
-if(mysql_num_rows($sqla)>0){
-  $pesan=mysql_fetch_assoc($sqla);
-  $penerimapesan=$user;
-  $sqlpengirim = mysql_query("select * from mahasiswa where nim='".$pesan['pengirim']."'");
-  if(mysql_num_rows($sqlpengirim)<=0){
-    $sqlpengirim = mysql_query("select * from dosen where nip='".$pesan['pengirim']."'");
-  }
-  $pengirimpesan = mysql_fetch_assoc($sqlpengirim);
+$tipe="";
+if(!isset($_GET['view'])||empty($_GET['view'])){            
+  $tipe="INBOX";
 }
 else{
-  $sqla=mysql_query("select * from pesan where idpesan=".$idpesan." AND pengirim='".$user['nim']."'");
-  $pesan=mysql_fetch_assoc($sqla);
-  $pengirimpesan=$user;
-  $sqlpenerima = mysql_query("select * from mahasiswa where nim='".$pesan['penerima']."'");
-  if(mysql_num_rows($sqlpenerima)<=0){
-    $sqlpenerima = mysql_query("select * from dosen where nip='".$pesan['penerima']."'");
-  }
-  $penerimapesan = mysql_fetch_assoc($sqlpenerima);
+  $tipe=strtoupper($_GET['view']);
 }
 
-if($pesan['status']=="UNREAD" && $pesan['pengirim']!=$user['nim']){
-  mysql_query("UPDATE pesan SET status='READ' WHERE idpesan=".$idpesan, $connection) or die(mysql_error());
+if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
+  $tipe="INBOX";
 }
-
-$date = date_create($pesan['tanggal']);
-$tanggalkirim= date_format($date,"d M Y");
 ?>
 
 <!DOCTYPE html>
@@ -53,32 +27,32 @@ $tanggalkirim= date_format($date,"d M Y");
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="dist/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../dist/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="../https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Style Buatan -->
-  <link rel="stylesheet" href="dist/css/style.css">
+  <link rel="stylesheet" href="../dist/css/style.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+  <link rel="stylesheet" href="../plugins/iCheck/flat/blue.css">
   <!-- Morris chart -->
-  <link rel="stylesheet" href="plugins/morris/morris.css">
+  <link rel="stylesheet" href="../plugins/morris/morris.css">
   <!-- jvectormap -->
-  <link rel="stylesheet" href="plugins/jvectormap/jquery-jvectormap-1.2.2.css">
+  <link rel="stylesheet" href="../plugins/jvectormap/jquery-jvectormap-1.2.2.css">
   <!-- Date Picker -->
-  <link rel="stylesheet" href="plugins/datepicker/datepicker3.css">
+  <link rel="stylesheet" href="../plugins/datepicker/datepicker3.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker-bs3.css">
+  <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker-bs3.css">
   <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+  <link rel="stylesheet" href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/iCheck/flat/blue.css">
+  <link rel="stylesheet" href="../plugins/iCheck/flat/blue.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -150,9 +124,9 @@ $tanggalkirim= date_format($date,"d M Y");
                         echo '<li>';
                       }
                       echo '
-                        <a href="#">
+                        <a href="read.php?id='.$data['idpesan'].'">
                           <div class="pull-left">
-                            <img src="dist/img/'.$pengirim['foto'].'" class="img-circle" alt="User Image">
+                            <img src="../assets/images/'.$pengirim['foto'].'" class="img-circle" alt="User Image">
                           </div>
                           <h4>
                             '.$pengirim['nama'].'
@@ -165,21 +139,21 @@ $tanggalkirim= date_format($date,"d M Y");
                   ?>
                 </ul>
               </li>
-              <li class="footer"><a href="#">Lihat Semua Pesan</a></li>
+              <li class="footer"><a href="mailbox.php">Lihat Semua Pesan</a></li>
             </ul>
           </li>
          
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <img src="dist/img/<?php echo $user['foto'] ?>" class="user-image" alt="User Image">
+              <img src="../assets/images/<?php echo $user['foto'] ?>" class="user-image" alt="User Image">
               <span class="hidden-xs"><?php echo $user['nama'];?></span>
               <i class="fa fa-sort-down pull-right"></i>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
               <li class="user-header">
-                <img src="dist/img/<?php echo $user['foto'] ?>" class="img-circle" alt="User Image">
+                <img src="../assets/images/<?php echo $user['foto'] ?>" class="img-circle" alt="User Image">
 
                 <p>
                   <?php echo $user['nama'];?>
@@ -189,10 +163,10 @@ $tanggalkirim= date_format($date,"d M Y");
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="profil.php" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="logout.php" class="btn btn-default btn-flat">Keluar</a>
+                  <a href="../logout.php" class="btn btn-default btn-flat">Keluar</a>
                 </div>
               </li>
             </ul>
@@ -208,7 +182,7 @@ $tanggalkirim= date_format($date,"d M Y");
       <!-- Sidebar user panel -->
       <div class="user-panel">
         <div class="pull-left image">
-          <img src="dist/img/<?php echo $user['foto'] ?>" class="img-circle" alt="User Image">
+          <img src="../assets/images/<?php echo $user['foto'] ?>" class="img-circle" alt="User Image">
         </div>
         <div class="pull-left info">
           <p><?php echo $user['nama'];?></p>
@@ -229,32 +203,32 @@ $tanggalkirim= date_format($date,"d M Y");
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
-        <li class="active treeview">
+        <li class="treeview">
           <a href="index.php">
             <i class="fa fa-dashboard"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="treeview">
-          <a href="#">
+        <li class="active treeview">
+          <a href="mailbox.php">
             <i class="fa fa-envelope"></i>
             <span>Pesan</span>
           </a>
         </li>
         <li class="treeview">
-          <a href="#">
+          <a href="dosen.php">
             <i class="fa fa-user"></i>
             <span>Profil Dosen</span>
           </a>
         </li>
         <li class="treeview">
-          <a href="#">
+          <a href="tugas.php">
             <i class="fa fa-flag"></i>
             <span>Tugas</span>
           </a>
         </li>
         <li class="header">CREDITS</li>
-        <li><a href="#"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
+        <li><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -265,12 +239,12 @@ $tanggalkirim= date_format($date,"d M Y");
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Dashboard
-        <small>Control panel</small>
+        Pesan
+        <small>Mahasiswa</small>
       </h1>
       <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Dashboard</li>
+        <li><a href="index.php"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">Pesan</li>
       </ol>
     </section>
 
@@ -278,7 +252,7 @@ $tanggalkirim= date_format($date,"d M Y");
     <section class="content">
       <div class="row">
         <div class="col-md-3">
-          <a href="compose.html" class="btn btn-primary btn-block margin-bottom">Tulis Pesan</a>
+          <a href="pesanbaru.php" class="btn btn-primary btn-block margin-bottom">Tulis Pesan</a>
 
           <div class="box box-solid">
             <div class="box-header with-border">
@@ -291,16 +265,16 @@ $tanggalkirim= date_format($date,"d M Y");
             </div>
             <div class="box-body no-padding">
               <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#"><i class="fa fa-inbox"></i> Kotak Masuk
+                <li id="kotakmasuk" class="active"><a href="mailbox.php?view=INBOX"><i class="fa fa-inbox"></i> Kotak Masuk
                   <?php
                     if($jumlahUNREAD>0){
                       echo '<span class="label label-primary pull-right">'.$jumlahUNREAD.'</span></a></li>';
                     }
                   ?>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
+                <li id="kotakkeluar"><a href="mailbox.php?view=OUTBOX"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
                 <!-- Baru diubah aga  -->
-                <li><a href="#"><i class="fa fa-star"></i> Favorite</a>
-                <li><a href="#"><i class="fa fa-inbox"></i> Semua Pesan 
+                <li id="kotakfavorit"><a href="mailbox.php?view=FAVORITE"><i class="fa fa-star"></i> Favorite</a>
+                <li id="kotaksemua"><a href="mailbox.php?view=ALL"><i class="fa fa-inbox"></i> Semua Pesan 
                   <span class="label label-warning pull-right"><?php echo $jumlahPesan ?></span></a>
                 </li>
                 
@@ -312,47 +286,89 @@ $tanggalkirim= date_format($date,"d M Y");
           
         </div>
         <!-- /.col -->
-
         <div class="col-md-9">
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Baca Pesan</h3>
+              <h3 class="box-title"><?php echo $tipe; ?></h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body no-padding">
-              <div class="mailbox-read-info">
-                <h3><?php echo $pesan['subject']?></h3>
-                <h5>Dari   : <?php echo $pengirimpesan['nama']?> [ <?php echo $pesan['pengirim']?> ]</h5>
-                <h5>Kepada : <?php echo $penerimapesan['nama']?> [ <?php echo $pesan['penerima']?> ]
-                  <span class="mailbox-read-time pull-right"><?php echo $tanggalkirim?></span></h5>
-              </div>
-              <!-- /.mailbox-read-info -->
-              <div class="mailbox-controls with-border text-center">
+            <div class="box-body">
+              <div class="mailbox-controls">
+                <!-- Check all button -->
+                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
+                </button>
                 <div class="btn-group">
-                  
-                  <a href="compose.html"><button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="Reply">
-                    <i class="fa fa-reply"></i></button></a>
+                  <button onclick="hapusBanyak()" type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
                 </div>
                 <!-- /.btn-group -->
-                <button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" title="Print">
-                  <i class="fa fa-print"></i></button>
+                <button onclick="refresh()" type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
               </div>
-              <!-- /.mailbox-controls -->
-              <div class="mailbox-read-message">
-                <?php echo $pesan['isipesan']?>
+              <div class="table-responsive mailbox-messages">
+                <table class="table table-hover">
+                  <tbody id="listpesan">
+                    <?php
+                      switch ($tipe) {
+                        case 'OUTBOX':
+                          $sql = "select * from pesan where pengirim='".$user['nim']."'";
+                          break;
+                        case 'FAVORITE':
+                          $sql = "select * from pesan where (pengirim='".$user['nim']."' OR penerima='".$user['nim']."') AND favorit='FAVORITE'";
+                          break;
+                        case 'ALL':
+                          $sql = "select * from pesan where pengirim='".$user['nim']."' OR penerima='".$user['nim']."'";
+                          break;
+                        default:
+                          $sql = "select * from pesan where penerima='".$user['nim']."'";
+                          break;
+                      }
+                      
+                      $sqla=mysql_query($sql);
+                      while($data = mysql_fetch_array($sqla)) {
+                        $sqlpengirim = mysql_query("select * from mahasiswa where nim='".$data['pengirim']."'");
+                        if(mysql_num_rows($sqlpengirim)<=0){
+                          $sqlpengirim = mysql_query("select * from dosen where nip='".$data['pengirim']."'");
+                        }
+                        $pengirim = mysql_fetch_assoc($sqlpengirim);
+                        $sqlpenerima = mysql_query("select * from mahasiswa where nim='".$data['penerima']."'");
+                        if(mysql_num_rows($sqlpenerima)<=0){
+                          $sqlpenerima = mysql_query("select * from dosen where nip='".$data['penerima']."'");
+                        }
+                        $penerima = mysql_fetch_assoc($sqlpenerima);
+                        $date = date_create($data['tanggal']);
+                        $tanggalkirim= date_format($date,"d M Y");
+                        $subject= substr($data['subject'],0,50);
+                        if($data['status']=="UNREAD"){
+                          echo '<tr style="background: #E3F2FD" id="'.$data['idpesan'].'">';
+                        }
+                        else{
+                          echo '<tr id="'.$data['idpesan'].'">';
+                        }
+                        echo '
+                          <td><input type="checkbox"></td>';
+                        if($data['favorit']=="FAVORITE"){
+                          echo '<td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>';
+                        }
+                        else {
+                          echo '<td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>';
+                        }
+                        echo '
+                          <td class="mailbox-name"><a href="read.php?id='.$data['idpesan'].'"><b>'.$pengirim['nama'].'</b> > <b>'.$penerima['nama'].'</b></a></td>
+                          <td class="mailbox-subject">'.$subject.'
+                          </td>
+                          <td class="mailbox-date">'.$tanggalkirim.'</td>
+                        </tr>
+                        ';
+                      }
+                    ?>
+
+                  
+                  </tbody>
+                </table>
+                <!-- /.table -->
               </div>
-              <!-- /.mailbox-read-message -->
+              <!-- /.mail-box-messages -->
             </div>
             <!-- /.box-body -->
-            <div class="box-footer">
-              <div class="pull-right">
-                <a href="mailbox.html"><button type="button" class="btn btn-default"><i class="fa fa-reply"></i> Kembali</button></a>
-                <a href="compose.html"><button type="button" class="btn btn-default"><i class="fa fa-share"></i> Balas</button></a>
-              </div>
-              <button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i> Hapus Pesan</button>
-              <button type="button" class="btn btn-default"><i class="fa fa-print"></i> Cetak Pesan</button>
-            </div>
-            <!-- /.box-footer -->
           </div>
           <!-- /. box -->
         </div>
@@ -370,16 +386,11 @@ $tanggalkirim= date_format($date,"d M Y");
     </div>
     <strong>Copyright &copy; 2016 <a href="#">HAHA</a>.</strong> All rights reserved.
   </footer>
-
-  
-  <!-- Add the sidebar's background. This div must be placed
-       immediately after the control sidebar -->
-  <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 
 <!-- jQuery 2.2.0 -->
-<script src="plugins/jQuery/jQuery-2.2.0.min.js"></script>
+<script src="../plugins/jQuery/jQuery-2.2.0.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -387,36 +398,36 @@ $tanggalkirim= date_format($date,"d M Y");
   $.widget.bridge('uibutton', $.ui.button);
 </script>
 <!-- Bootstrap 3.3.6 -->
-<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- Morris.js charts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="plugins/morris/morris.min.js"></script>
+<script src="../plugins/morris/morris.min.js"></script>
 <!-- Sparkline -->
-<script src="plugins/sparkline/jquery.sparkline.min.js"></script>
+<script src="../plugins/sparkline/jquery.sparkline.min.js"></script>
 <!-- jvectormap -->
-<script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
+<script src="../plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+<script src="../plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
 <!-- jQuery Knob Chart -->
-<script src="plugins/knob/jquery.knob.js"></script>
+<script src="../plugins/knob/jquery.knob.js"></script>
 <!-- daterangepicker -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<script src="../https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="../plugins/daterangepicker/daterangepicker.js"></script>
 <!-- datepicker -->
-<script src="plugins/datepicker/bootstrap-datepicker.js"></script>
+<script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- Bootstrap WYSIHTML5 -->
-<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
+<script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <!-- Slimscroll -->
-<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
-<script src="plugins/fastclick/fastclick.js"></script>
+<script src="../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/app.min.js"></script>
+<script src="../dist/js/app.min.js"></script>
 <!-- iCheck -->
-<script src="plugins/iCheck/icheck.min.js"></script>
+<script src="../plugins/iCheck/icheck.min.js"></script>
 <!-- Page Script -->
-<script src="assets/js/myscript.js"></script>
+<script src="../assets/js/mailbox-mahasiswa.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
+<script src="../dist/js/pages/dashboard.js"></script>
 </body>
 </html>
 

@@ -1,8 +1,13 @@
 <?php
   session_start();
-    $pesan="";
-  if(isset($_SESSION['user'])){
-    header("location: index.php");
+  $pesan="";
+  if(isset($_SESSION['user'])&&isset($_SESSION['level'])){
+    if($_SESSION['level']=="mahasiswa"){
+      header("location: mahasiswa/index.php");
+    }
+    else if($_SESSION['level']=="dosen"){
+      header("location: dosen/index.php");
+    }
   }
   else if (isset($_POST['submit'])) {
     if (empty($_POST['nimornip']) || empty($_POST['password'])) {
@@ -22,15 +27,27 @@
       $password = mysql_real_escape_string($password);
       // Seleksi Database
       $db = mysql_select_db("projectpbw", $connection);
-      // SQL query untuk memeriksa apakah user terdapat di database?
+      // SQL query untuk memeriksa apakah user terdapat di database pada tabel mahasiswa
       $query = mysql_query("select * from mahasiswa where nim='$nimornip' AND password='".$password."'", $connection);
       $rows = mysql_num_rows($query);
       if ($rows == 1) {
         $_SESSION['user']=$nimornip; // Membuat Sesi/session
-        header("location: index.php"); // Mengarahkan ke halaman profil
+        $_SESSION['level']="mahasiswa";
+        header("location: mahasiswa/index.php");
       }
       else {
-        header("location: login.php?error");
+        // SQL query untuk memeriksa apakah user terdapat di database pada tabel dosen
+        $query = mysql_query("select * from dosen where nip='$nimornip' AND password='".$password."'", $connection);
+        $rows = mysql_num_rows($query);
+        if ($rows == 1) {
+          $_SESSION['user']=$nimornip; // Membuat Sesi/session
+          $_SESSION['level']="dosen";
+          header("location: dosen/index.php");
+        }
+        else{
+          // Jika tidak ada maka login gagal
+          header("location: login.php?error");
+        }
       }
       mysql_close($connection); // Menutup koneksi
     }
@@ -62,7 +79,7 @@
   <style type="text/css">
         body {            
             background-image:   
-              url(bg0.png); 
+              url(assets/images/bg0.png); 
             background-repeat: repeat-x;         
             animation: backgroundScroll 3999990s linear infinite;
             }

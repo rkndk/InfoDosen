@@ -1,6 +1,6 @@
 <?php
-	include "session.php";
-	include "koneksi.php";
+	include "../session.php";
+	include "../koneksi.php";
 	$user = $userOnSession;
 	$tipe = $_POST['tipe'];
 	$nip = $_POST['nip'];
