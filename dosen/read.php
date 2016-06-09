@@ -153,7 +153,7 @@ $tanggalkirimpesan= date_format($date,"d M Y");
                         echo '<li>';
                       }
                       echo '
-                        <a href="#">
+                        <a href="read.php?id='.$data['idpesan'].'">
                           <div class="pull-left">
                             <img src="../assets/images/'.$pengirim['foto'].'" class="img-circle" alt="User Image">
                           </div>
@@ -168,7 +168,7 @@ $tanggalkirimpesan= date_format($date,"d M Y");
                   ?>
                 </ul>
               </li>
-              <li class="footer"><a href="#">Lihat Semua Pesan</a></li>
+              <li class="footer"><a href="mailbox.php">Lihat Semua Pesan</a></li>
             </ul>
           </li>
          
@@ -228,13 +228,13 @@ $tanggalkirimpesan= date_format($date,"d M Y");
           </a>
         </li>
         <li class="treeview">
-          <a href="#">
+          <a href="mailbox.php">
             <i class="fa fa-envelope"></i>
             <span>Pesan</span>
           </a>
         </li>
         <li class="header">CREDITS</li>
-        <li><a href="#"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
+        <li><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->

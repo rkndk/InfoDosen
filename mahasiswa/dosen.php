@@ -1,14 +1,17 @@
 <?php
 include "../session.php";
 include "../koneksi.php";
-if($_SESSION['level']!="dosen"){
+if($_SESSION['level']!="mahasiswa"){
   header('Location: ../login.php');
 }
-$user=$userOnSession;
-$penerima="";
-if(isset($_GET['ke'])){
-  $penerima=$_GET['ke'];
+if(!isset($_GET['nip'])||empty($_GET['nip'])){
+  header('Location: index.php');
 }
+$nip=$_GET['nip'];
+$user=$userOnSession;
+$sqla=mysql_query("select * from dosen where nip='".$nip."'");
+$dosen=mysql_fetch_assoc($sqla);
+
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +19,7 @@ if(isset($_GET['ke'])){
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>JUDUL - Pesan Baru</title>
+  <title>JUDUL HAHAHAHA</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -74,7 +77,7 @@ if(isset($_GET['ke'])){
 
 
       <?php
-        $sql = "select * from pesan where penerima='".$user['nip']."' AND status='UNREAD'";
+        $sql = "select * from pesan where penerima='".$user['nim']."' AND status='UNREAD'";
         $sqla=mysql_query($sql);
         $jumlahUNREAD=mysql_num_rows($sqla);
       ?>
@@ -96,10 +99,10 @@ if(isset($_GET['ke'])){
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <?php
-                    $sql = "select * from pesan where penerima='".$user['nip']."' or pengirim='".$user['nip']."'";
+                    $sql = "select * from pesan where penerima='".$user['nim']."' or pengirim='".$user['nim']."'";
                     $sqla=mysql_query($sql);
                     $jumlahPesan=mysql_num_rows($sqla);
-                    $sql = "select * from pesan where penerima='".$user['nip']."' ORDER BY status DESC";
+                    $sql = "select * from pesan where penerima='".$user['nim']."' ORDER BY status DESC";
                     $sqla=mysql_query($sql);
                     for($i=0; ($data = mysql_fetch_array($sqla))&&$i<5; $i++) {
                       $sqlpengirim = mysql_query("select * from mahasiswa where nim='".$data['pengirim']."'");
@@ -182,6 +185,17 @@ if(isset($_GET['ke'])){
           <?php echo $user['deskripsi'];?>
         </div>
       </div>
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
@@ -197,6 +211,18 @@ if(isset($_GET['ke'])){
             <span>Pesan</span>
           </a>
         </li>
+        <li class="treeview">
+          <a href="dosen.php">
+            <i class="fa fa-user"></i>
+            <span>Profil Dosen</span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="tugas.php">
+            <i class="fa fa-flag"></i>
+            <span>Tugas</span>
+          </a>
+        </li>
         <li class="header">CREDITS</li>
         <li><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
       </ul>
@@ -209,85 +235,120 @@ if(isset($_GET['ke'])){
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pesan
-        <small>Dosen</small>
+        Dosen
       </h1>
       <ol class="breadcrumb">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Pesan</li>
+        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>        
+        <li class="active">Dosen</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
+
       <div class="row">
         <div class="col-md-3">
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $dosen['foto'] ?>" alt="User profile picture">
 
-          <div class="box box-solid">
-            <div class="box-header with-border">
-              <h3 class="box-title">Folders</h3>
+              <h3 class="profile-username text-center"><?php echo $dosen['nama'] ?></h3>
 
-              <div class="box-tools">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body no-padding">
-              <ul class="nav nav-pills nav-stacked">
-                <li><a href="mailbox.php?view=INBOX"><i class="fa fa-inbox"></i> Kotak Masuk
-                  <?php
-                    if($jumlahUNREAD>0){
-                      echo '<span class="label label-primary pull-right">'.$jumlahUNREAD.'</span></a></li>';
-                    }
-                  ?>
-                <li><a href="mailbox.php?view=OUTBOX"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
-                <!-- Baru diubah aga  -->
-                <li><a href="mailbox.php?view=FAVORITE"><i class="fa fa-star"></i> Favorite</a>
-                <li><a href="mailbox.php?view=ALL"><i class="fa fa-inbox"></i> Semua Pesan 
-                  <span class="label label-warning pull-right"><?php echo $jumlahPesan ?></span></a>
-                </li>
-                
+              <p class="text-muted text-center">NIP : <?php echo $dosen['nip'] ?></p>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                   <div class="knob-label">  <?php echo $dosen['status'] ?></div>
+                </li>                
               </ul>
+              <a href="pesanbaru.php?ke=<?php echo $dosen['nip'] ?>" class="btn btn-primary btn-block"><b>Message</b></a>
             </div>
             <!-- /.box-body -->
           </div>
-          <!-- /. box -->
-          
+          <!-- /.box -->
         </div>
-        <!-- /.col -->
+          <div class="col-md-9">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <i class="fa fa-text-width"></i>
 
-        <div class="col-md-9">
-          <!-- buat catatan -->
-            <div class="box box-info">
-                <div class="box-header">
-                  <i class="fa fa-plus"></i>
-                  <h3 class="box-title">Pesan Baru</h3>
-                </div>
-                <form action="../kirimpesan.php" method="post">
-                      <div class="box-body">
-                        <div class="form-group">
-                          <input type="number" class="form-control" name="penerima" placeholder="NIM atau NIP Tujuan" value=<?php echo $penerima ?>>
-                        </div>
-                        <div class="form-group">
-                          <input type="text" class="form-control" name="subject" placeholder="Subject">
-                        </div>
-                        <div>
-                          <textarea id="isipesan" name="isipesan" class="textarea" placeholder="Isi Pesan" style="width: 100%; height: 240px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                        </div>
-                      </div>
-                      <div class="box-footer clearfix">
-                        <button name="pesanbaru" type="submit" class="pull-right btn btn-default" id="pesanbaru">Kirim
-                          <i class="fa fa-arrow-circle-right"></i></button>
-                      </div>
-                </form>
+              <h3 class="box-title">Deskripsi</h3>
             </div>
-          <!-- /. box -->
+            <!-- /.box-header -->
+            <div class="box-body">
+              <dl class="dl-horizontal">
+                <dt>About</dt>
+                <dd><?php echo $dosen['about'] ?></dd>
+              </dl>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
+        </div>
+        <!-- ./col -->
+      
+      <!-- /.row -->
+      <!-- END TYPOGRAPHY -->
+        <div class="col-md-12">
+          <!-- Custom Tabs (Pulled to the right) -->
+          <div class="nav-tabs-custom">
+            <ul class="nav nav-tabs pull-right">
+              <li><a href="#tab_1-1" data-toggle="tab">Misc</a></li>
+              <li><a href="#tab_2-2" data-toggle="tab">Award</a></li>
+                <li class="active"><a href="#tab_3-2" data-toggle="tab">Mata Kuliah</a></li>              
+                <li class="pull-left header"><i class="fa fa-th"></i>Menu</li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane" id="tab_1-1">
+                <ul>
+                <li><?php echo $dosen['misc'] ?></li>
+                </ul>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane" id="tab_2-2">
+                <ul>
+                <li><?php echo $dosen['award'] ?></li>
+                </ul>
+              </div>
+              <!-- /.tab-pane -->
+              <div class="tab-pane active" id="tab_3-2">
+            <!-- /.box-header -->
+            <div class="box-body">
+              <div class="table-responsive">
+                <table class="table no-margin">
+                  <thead>
+                  <tr>
+                    <th>Mata Kuliah</th>
+                    <th>Ikuti</th>                    
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php
+                    $sqla=mysql_query("select * from matakuliah where pengajar='".$dosen['nip']."'");
+                    while($matakuliah=mysql_fetch_array($sqla)){
+                      echo '
+                      <tr id="'.$matakuliah['idpelajaran'].'">
+                        <td>'.$matakuliah['nama'].'</td>
+                        <td class="haha-star"><a href="#"><i class="fa fa-eye-slash text-green"></i> Ikuti</a></td>
+                      </tr>';
+                    }
+                  ?>               
+                  </tbody>
+                </table>
+              </div>
+              <!-- /.table-responsive -->
+              </div>
+              <!-- /.tab-pane -->
+            </div>
+            <!-- /.tab-content -->
+          </div>
+          <!-- nav-tabs-custom -->
         </div>
         <!-- /.col -->
       </div>
-      <!-- /.row -->
-
-    </section>
+    </div>
+    </section>    
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -332,11 +393,6 @@ if(isset($_GET['ke'])){
 <script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<!--
-<script>
-$('.textarea').wysihtml5();
-</script>
--->
 <!-- Slimscroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -346,6 +402,47 @@ $('.textarea').wysihtml5();
 <!-- iCheck -->
 <script src="../plugins/iCheck/icheck.min.js"></script>
 <!-- Page Script -->
+<script>
+  $(function () {
+    //Handle starring for glyphicon and font awesome
+    $(".haha-star").click(function (e) {
+      e.preventDefault();
+      //detect type
+      var $this = $(this).find("a > i");
+      var glyph = $this.hasClass("glyphicon");
+      var fa = $this.hasClass("fa");
+      var trid = $(this).closest('tr').attr('id');
+
+      //Switch states
+      if (glyph) {
+        $this.toggleClass("glyphicon-star");
+        $this.toggleClass("glyphicon-star-empty");
+      }
+
+      if (fa) {
+        $this.toggleClass("fa-eye");
+        $this.toggleClass("fa-eye-slash");
+      }
+      if(!$this.hasClass("fa-eye")){
+        subscribe("subscribe",trid);
+      }
+      else{
+        subscribe("unsubscribe",trid);
+      }
+    });
+  });
+
+  function subscribe(tipe, id){
+    $.post("../subscribe.php",
+      {
+          tipe: tipe,
+          id: id
+      },
+      function(data, status){
+      }
+    );
+  }
+</script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard.js"></script>
 </body>

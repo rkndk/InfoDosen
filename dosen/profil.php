@@ -5,10 +5,7 @@ if($_SESSION['level']!="dosen"){
   header('Location: ../login.php');
 }
 $user=$userOnSession;
-$penerima="";
-if(isset($_GET['ke'])){
-  $penerima=$_GET['ke'];
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +13,7 @@ if(isset($_GET['ke'])){
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>JUDUL - Pesan Baru</title>
+  <title>JUDUL HAHAHAHA</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -132,7 +129,7 @@ if(isset($_GET['ke'])){
                   ?>
                 </ul>
               </li>
-              <li class="footer"><a href="mailbox.php">Lihat Semua Pesan</a></li>
+              <li class="footer"><a href="#">Lihat Semua Pesan</a></li>
             </ul>
           </li>
          
@@ -156,7 +153,7 @@ if(isset($_GET['ke'])){
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="profil.php" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <a href="../logout.php" class="btn btn-default btn-flat">Keluar</a>
@@ -185,20 +182,20 @@ if(isset($_GET['ke'])){
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
-        <li class="treeview">
+        <li class="active treeview">
           <a href="index.php">
             <i class="fa fa-dashboard"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="active treeview">
-          <a href="mailbox.php">
+        <li class="treeview">
+          <a href="#">
             <i class="fa fa-envelope"></i>
             <span>Pesan</span>
           </a>
         </li>
         <li class="header">CREDITS</li>
-        <li><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
+        <li><a href="#"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -220,74 +217,54 @@ if(isset($_GET['ke'])){
 
     <!-- Main content -->
     <section class="content">
+
       <div class="row">
         <div class="col-md-3">
+          <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
 
-          <div class="box box-solid">
-            <div class="box-header with-border">
-              <h3 class="box-title">Folders</h3>
+              <h3 class="profile-username text-center">Nina Mcintire</h3>
 
-              <div class="box-tools">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body no-padding">
-              <ul class="nav nav-pills nav-stacked">
-                <li><a href="mailbox.php?view=INBOX"><i class="fa fa-inbox"></i> Kotak Masuk
-                  <?php
-                    if($jumlahUNREAD>0){
-                      echo '<span class="label label-primary pull-right">'.$jumlahUNREAD.'</span></a></li>';
-                    }
-                  ?>
-                <li><a href="mailbox.php?view=OUTBOX"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
-                <!-- Baru diubah aga  -->
-                <li><a href="mailbox.php?view=FAVORITE"><i class="fa fa-star"></i> Favorite</a>
-                <li><a href="mailbox.php?view=ALL"><i class="fa fa-inbox"></i> Semua Pesan 
-                  <span class="label label-warning pull-right"><?php echo $jumlahPesan ?></span></a>
-                </li>
-                
+              <p class="text-muted text-center">NIP : 1408107010037</p>
+
+              <ul class="list-group list-group-unbordered">
+                <li class="list-group-item">
+                   <div class="knob-label"><i class="fa fa-circle text-yellow"></i>  BUSY</div>
+                </li>                
               </ul>
+              <a href="editprofil.php" class="btn btn-primary btn-block"><b>Edit</b></a>
             </div>
             <!-- /.box-body -->
           </div>
-          <!-- /. box -->
-          
+          <!-- /.box -->
         </div>
-        <!-- /.col -->
+          <div class="col-md-9">
+          <div class="box box-solid">
+            <div class="box-header with-border">
+              <i class="fa fa-text-width"></i>
 
-        <div class="col-md-9">
-          <!-- buat catatan -->
-            <div class="box box-info">
-                <div class="box-header">
-                  <i class="fa fa-plus"></i>
-                  <h3 class="box-title">Pesan Baru</h3>
-                </div>
-                <form action="../kirimpesan.php" method="post">
-                      <div class="box-body">
-                        <div class="form-group">
-                          <input type="number" class="form-control" name="penerima" placeholder="NIM atau NIP Tujuan" value=<?php echo $penerima ?>>
-                        </div>
-                        <div class="form-group">
-                          <input type="text" class="form-control" name="subject" placeholder="Subject">
-                        </div>
-                        <div>
-                          <textarea id="isipesan" name="isipesan" class="textarea" placeholder="Isi Pesan" style="width: 100%; height: 240px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                        </div>
-                      </div>
-                      <div class="box-footer clearfix">
-                        <button name="pesanbaru" type="submit" class="pull-right btn btn-default" id="pesanbaru">Kirim
-                          <i class="fa fa-arrow-circle-right"></i></button>
-                      </div>
-                </form>
+              <h3 class="box-title">Deskripsi</h3>
             </div>
-          <!-- /. box -->
+            <!-- /.box-header -->
+            <div class="box-body">
+              <dl class="dl-horizontal">
+                <dt>About</dt>
+                <dd><?php echo $user['about'] ?></dd>
+              </dl>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
         </div>
-        <!-- /.col -->
-      </div>
+        <!-- ./col -->
+      
       <!-- /.row -->
-
-    </section>
+      <!-- END TYPOGRAPHY -->
+        
+      </div>
+    </div>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -332,11 +309,6 @@ if(isset($_GET['ke'])){
 <script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<!--
-<script>
-$('.textarea').wysihtml5();
-</script>
--->
 <!-- Slimscroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -346,6 +318,7 @@ $('.textarea').wysihtml5();
 <!-- iCheck -->
 <script src="../plugins/iCheck/icheck.min.js"></script>
 <!-- Page Script -->
+<script src="../assets/js/mailbox-dosen.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard.js"></script>
 </body>

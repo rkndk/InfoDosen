@@ -1,14 +1,24 @@
 <?php
 include "../session.php";
 include "../koneksi.php";
-if($_SESSION['level']!="dosen"){
+if($_SESSION['level']!="mahasiswa"){
   header('Location: ../login.php');
 }
 $user=$userOnSession;
-$penerima="";
-if(isset($_GET['ke'])){
-  $penerima=$_GET['ke'];
+$profil=array();
+if(!isset($_GET['nim'])||empty($_GET['nim'])){            
+  $profil=$user;
 }
+else{
+  $sqla=mysql_query("select * from mahasiswa where nim='".$_GET['nim']."'");
+  if(mysql_num_rows($sqla)>0){
+    $profil=mysql_fetch_assoc($sqla);
+  }
+  else{
+    header("Location: index.php");
+  }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +26,7 @@ if(isset($_GET['ke'])){
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>JUDUL - Pesan Baru</title>
+  <title>JUDUL HAHAHAHA</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -74,7 +84,7 @@ if(isset($_GET['ke'])){
 
 
       <?php
-        $sql = "select * from pesan where penerima='".$user['nip']."' AND status='UNREAD'";
+        $sql = "select * from pesan where penerima='".$user['nim']."' AND status='UNREAD'";
         $sqla=mysql_query($sql);
         $jumlahUNREAD=mysql_num_rows($sqla);
       ?>
@@ -96,10 +106,10 @@ if(isset($_GET['ke'])){
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <?php
-                    $sql = "select * from pesan where penerima='".$user['nip']."' or pengirim='".$user['nip']."'";
+                    $sql = "select * from pesan where penerima='".$user['nim']."' or pengirim='".$user['nim']."'";
                     $sqla=mysql_query($sql);
                     $jumlahPesan=mysql_num_rows($sqla);
-                    $sql = "select * from pesan where penerima='".$user['nip']."' ORDER BY status DESC";
+                    $sql = "select * from pesan where penerima='".$user['nim']."' ORDER BY status DESC";
                     $sqla=mysql_query($sql);
                     for($i=0; ($data = mysql_fetch_array($sqla))&&$i<5; $i++) {
                       $sqlpengirim = mysql_query("select * from mahasiswa where nim='".$data['pengirim']."'");
@@ -182,6 +192,17 @@ if(isset($_GET['ke'])){
           <?php echo $user['deskripsi'];?>
         </div>
       </div>
+      <!-- search form -->
+      <form action="#" method="get" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="q" class="form-control" placeholder="Search...">
+              <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
+      <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
@@ -197,6 +218,18 @@ if(isset($_GET['ke'])){
             <span>Pesan</span>
           </a>
         </li>
+        <li class="treeview">
+          <a href="dosen.php">
+            <i class="fa fa-user"></i>
+            <span>Profil Dosen</span>
+          </a>
+        </li>
+        <li class="treeview">
+          <a href="tugas.php">
+            <i class="fa fa-flag"></i>
+            <span>Tugas</span>
+          </a>
+        </li>
         <li class="header">CREDITS</li>
         <li><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
       </ul>
@@ -209,12 +242,11 @@ if(isset($_GET['ke'])){
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pesan
-        <small>Dosen</small>
+        Mahasiswa
       </h1>
       <ol class="breadcrumb">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Pesan</li>
+        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>        
+        <li class="active">Mahasiswa</li>
       </ol>
     </section>
 
@@ -222,71 +254,88 @@ if(isset($_GET['ke'])){
     <section class="content">
       <div class="row">
         <div class="col-md-3">
+    <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $user['foto'] ?>" alt="User profile picture">
 
-          <div class="box box-solid">
-            <div class="box-header with-border">
-              <h3 class="box-title">Folders</h3>
+              <h3 class="profile-username text-center"><?php echo $user['nama'] ?></h3>
 
-              <div class="box-tools">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body no-padding">
-              <ul class="nav nav-pills nav-stacked">
-                <li><a href="mailbox.php?view=INBOX"><i class="fa fa-inbox"></i> Kotak Masuk
-                  <?php
-                    if($jumlahUNREAD>0){
-                      echo '<span class="label label-primary pull-right">'.$jumlahUNREAD.'</span></a></li>';
-                    }
-                  ?>
-                <li><a href="mailbox.php?view=OUTBOX"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
-                <!-- Baru diubah aga  -->
-                <li><a href="mailbox.php?view=FAVORITE"><i class="fa fa-star"></i> Favorite</a>
-                <li><a href="mailbox.php?view=ALL"><i class="fa fa-inbox"></i> Semua Pesan 
-                  <span class="label label-warning pull-right"><?php echo $jumlahPesan ?></span></a>
-                </li>
-                
-              </ul>
+              <p class="text-muted text-center">NIM : <?php echo $user['nim'] ?>
             </div>
             <!-- /.box-body -->
           </div>
-          <!-- /. box -->
-          
-        </div>
-        <!-- /.col -->
-
-        <div class="col-md-9">
-          <!-- buat catatan -->
-            <div class="box box-info">
-                <div class="box-header">
-                  <i class="fa fa-plus"></i>
-                  <h3 class="box-title">Pesan Baru</h3>
-                </div>
-                <form action="../kirimpesan.php" method="post">
-                      <div class="box-body">
-                        <div class="form-group">
-                          <input type="number" class="form-control" name="penerima" placeholder="NIM atau NIP Tujuan" value=<?php echo $penerima ?>>
-                        </div>
-                        <div class="form-group">
-                          <input type="text" class="form-control" name="subject" placeholder="Subject">
-                        </div>
-                        <div>
-                          <textarea id="isipesan" name="isipesan" class="textarea" placeholder="Isi Pesan" style="width: 100%; height: 240px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                        </div>
-                      </div>
-                      <div class="box-footer clearfix">
-                        <button name="pesanbaru" type="submit" class="pull-right btn btn-default" id="pesanbaru">Kirim
-                          <i class="fa fa-arrow-circle-right"></i></button>
-                      </div>
-                </form>
-            </div>
-          <!-- /. box -->
-        </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
+        <!-- left column -->
+        <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Form Edit</h3>
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form method="post" action="../edit.php" role="form" enctype="multipart/form-data">
+              <div class="box-body">
+                <input name="nim" type="hidden" value="<?php echo $user['nim'] ?>">
+                <div class="form-group">
+                  <label for="exampleInputNamaMhs">Nama</label>
+                  <input name="nama" type="text" class="form-control" id="exampleInputMhs" placeholder="Masukkan Nama" value="<?php echo $user['nama'] ?>">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputEmail">Email</label>
+                  <input name="email" type="email" class="form-control" id="exampleInputEmailMHS" placeholder="ex:email@mail.com" value="<?php echo $user['email'] ?>">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputGender">Jenis Kelamin</label><br/>
+                    <?php 
+                      if($user['jeniskelamin']=="Laki-Laki"){
+                        echo '
+                        <input type="radio" name="jeniskelamin" value="Laki-Laki" checked> Laki-Laki
+                        <input type="radio" name="jeniskelamin" value="Perempuan"> Perempuan';
+                      }
+                      else{
+                        echo '
+                        <input type="radio" name="jeniskelamin" value="Laki-Laki"> Laki-Laki
+                        <input type="radio" name="jeniskelamin" value="Perempuan" checked> Perempuan';
+                      }
+                    ?>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputBirthday">Tanggal Lahir</label><br/>
+                    <input name="tanggallahir" type="date" class="form-control" placeholder="Calendar" value="<?php echo $user['tanggallahir'] ?>">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputBirthday">Tanggal Lahir</label><br/>
+                    <textarea name="deskripsi"  class="form-control" placeholder="Deskripsi"><?php echo $user['deskripsi'] ?></textarea>
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="exampleInputJurusan">Jurusan</label><br/>
+                    <select name="jurusan" class="form-control selectpicker show-menu-arrow">              
+                      <option value="">Pilih Jurusan</option>                        
+                      <optgroup label="Fakultas MIPA"><option value="Informatika" data-subtext="MIPA">Informatika</option><option value="Biologi" data-subtext="Aceh">Biologi</option></optgroup>
+                      <optgroup label="Fakultas Teknik"><option value="Elektro" data-subtext="teknik">Elektro</option><option value="Arsitektur" data-subtext="Aceh">Arsitektur</option></optgroup>
+                      <optgroup label="Fakultas Ekonomi"><option value="Pembangunan" data-subtext="ekonomi">Pembangunan</option><option value="Manajemen" data-subtext="Aceh">Manajemen</option></optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputFile">Masukkan Foto</label>
+                  <input type="file" name="foto" id="foto">
 
+                  <p class="help-block">Max 160 x 160 Pixel</p>
+                </div>
+                
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div> 
+        </div>
+      </div>
     </section>
     <!-- /.content -->
   </div>
@@ -332,11 +381,6 @@ if(isset($_GET['ke'])){
 <script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script src="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<!--
-<script>
-$('.textarea').wysihtml5();
-</script>
--->
 <!-- Slimscroll -->
 <script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
@@ -346,6 +390,7 @@ $('.textarea').wysihtml5();
 <!-- iCheck -->
 <script src="../plugins/iCheck/icheck.min.js"></script>
 <!-- Page Script -->
+<script src="../assets/js/mailbox-mahasiswa.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard.js"></script>
 </body>
