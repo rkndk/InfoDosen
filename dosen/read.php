@@ -326,7 +326,7 @@ $tanggalkirimpesan= date_format($date,"d M Y");
                 ?>
               </div>
               <button onclick="hapuspesan(<?php echo $pesan['idpesan']?>)" type="button" class="btn btn-default"><i class="fa fa-trash-o"></i> Hapus Pesan</button>
-              <button onclick="cetakpesan(<?php echo $pesan['idpesan']?>)" type="button" class="btn btn-default"><i class="fa fa-print"></i> Cetak Pesan</button>
+              <a href="../buatpdf.php?id=<?php echo $pesan['idpesan']?>"><button type="button" class="btn btn-default"><i class="fa fa-print"></i> Cetak Pesan</button></a>
             </div>
             <!-- /.box-footer -->
           </div>
