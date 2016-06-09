@@ -26,7 +26,7 @@ else{
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>JUDUL HAHAHAHA</title>
+  <title>Info Dosen - Edit Profil</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -71,9 +71,9 @@ else{
     <!-- Logo -->
     <a href="index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>H</b>JD</span>
+      <span class="logo-mini"><b>i</b>D</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>HAHAHA</b>JUDUL</span>
+      <span class="logo-lg"><b>info</b>DOSEN</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -307,7 +307,7 @@ else{
                     <input name="tanggallahir" type="date" class="form-control" placeholder="Calendar" value="<?php echo $user['tanggallahir'] ?>">
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputBirthday">Tanggal Lahir</label><br/>
+                    <label for="exampleInputBirthday">Deskripsi</label><br/>
                     <textarea name="deskripsi"  class="form-control" placeholder="Deskripsi"><?php echo $user['deskripsi'] ?></textarea>
                 </div>
                 <div class="form-group has-feedback">
@@ -344,7 +344,7 @@ else{
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; 2016 <a href="#">HAHA</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2016 <a href="#">infoDosen</a>.</strong> All rights reserved.
   </footer>
 
   

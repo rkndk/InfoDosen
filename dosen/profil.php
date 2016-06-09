@@ -13,7 +13,7 @@ $user=$userOnSession;
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>JUDUL HAHAHAHA</title>
+  <title>Info Dosen - Profil</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -58,9 +58,9 @@ $user=$userOnSession;
     <!-- Logo -->
     <a href="index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>H</b>JD</span>
+      <span class="logo-mini"><b>i</b>D</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>HAHAHA</b>JUDUL</span>
+      <span class="logo-lg"><b>info</b>DOSEN</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -189,13 +189,13 @@ $user=$userOnSession;
           </a>
         </li>
         <li class="treeview">
-          <a href="#">
+          <a href="mailbox.php">
             <i class="fa fa-envelope"></i>
             <span>Pesan</span>
           </a>
         </li>
         <li class="header">CREDITS</li>
-        <li><a href="#"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
+        <li><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -223,15 +223,15 @@ $user=$userOnSession;
           <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $user['foto'] ?>" alt="User profile picture">
 
-              <h3 class="profile-username text-center">Nina Mcintire</h3>
+              <h3 class="profile-username text-center"><?php echo $user['nama'] ?></h3>
 
-              <p class="text-muted text-center">NIP : 1408107010037</p>
+              <p class="text-muted text-center">NIP : <?php echo $user['nip'] ?></p>
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                   <div class="knob-label"><i class="fa fa-circle text-yellow"></i>  BUSY</div>
+                   <div class="knob-label">  <?php echo $user['status'] ?></div>
                 </li>                
               </ul>
               <a href="editprofil.php" class="btn btn-primary btn-block"><b>Edit</b></a>
@@ -272,7 +272,7 @@ $user=$userOnSession;
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; 2016 <a href="#">HAHA</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2016 <a href="#">infoDosen</a>.</strong> All rights reserved.
   </footer>
 
   
