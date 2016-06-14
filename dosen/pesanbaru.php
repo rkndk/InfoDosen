@@ -16,7 +16,7 @@ if(isset($_GET['ke'])){
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>JUDUL - Pesan Baru</title>
+  <title>Info Dosen - Pesan Baru</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -61,9 +61,9 @@ if(isset($_GET['ke'])){
     <!-- Logo -->
     <a href="index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>H</b>JD</span>
+      <span class="logo-mini"><b>i</b>D</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>HAHAHA</b>JUDUL</span>
+      <span class="logo-lg"><b>info</b>DOSEN</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -117,7 +117,7 @@ if(isset($_GET['ke'])){
                         echo '<li>';
                       }
                       echo '
-                        <a href="#">
+                        <a href="read.php?id='.$data['idpesan'].'">
                           <div class="pull-left">
                             <img src="../assets/images/'.$pengirim['foto'].'" class="img-circle" alt="User Image">
                           </div>
@@ -132,7 +132,7 @@ if(isset($_GET['ke'])){
                   ?>
                 </ul>
               </li>
-              <li class="footer"><a href="#">Lihat Semua Pesan</a></li>
+              <li class="footer"><a href="mailbox.php">Lihat Semua Pesan</a></li>
             </ul>
           </li>
          
@@ -156,7 +156,7 @@ if(isset($_GET['ke'])){
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="profil.php" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <a href="../logout.php" class="btn btn-default btn-flat">Keluar</a>
@@ -185,20 +185,20 @@ if(isset($_GET['ke'])){
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
-        <li class="active treeview">
+        <li class="treeview">
           <a href="index.php">
             <i class="fa fa-dashboard"></i>
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="treeview">
-          <a href="#">
+        <li class="active treeview">
+          <a href="mailbox.php">
             <i class="fa fa-envelope"></i>
             <span>Pesan</span>
           </a>
         </li>
         <li class="header">CREDITS</li>
-        <li><a href="#"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
+        <li><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -295,7 +295,7 @@ if(isset($_GET['ke'])){
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; 2016 <a href="#">HAHA</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2016 <a href="#">infoDosen</a>.</strong> All rights reserved.
   </footer>
 
   

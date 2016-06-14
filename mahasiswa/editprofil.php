@@ -5,17 +5,20 @@ if($_SESSION['level']!="mahasiswa"){
   header('Location: ../login.php');
 }
 $user=$userOnSession;
-$tipe="";
-if(!isset($_GET['view'])||empty($_GET['view'])){            
-  $tipe="INBOX";
+$profil=array();
+if(!isset($_GET['nim'])||empty($_GET['nim'])){            
+  $profil=$user;
 }
 else{
-  $tipe=strtoupper($_GET['view']);
+  $sqla=mysql_query("select * from mahasiswa where nim='".$_GET['nim']."'");
+  if(mysql_num_rows($sqla)>0){
+    $profil=mysql_fetch_assoc($sqla);
+  }
+  else{
+    header("Location: index.php");
+  }
 }
 
-if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
-  $tipe="INBOX";
-}
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +26,7 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Info Dosen - Pesan</title>
+  <title>Info Dosen - Edit Profil</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -31,7 +34,7 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../dist/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="../https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Style Buatan -->
   <link rel="stylesheet" href="../dist/css/style.css">
   <!-- Theme style -->
@@ -239,12 +242,11 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pesan
-        <small>Mahasiswa</small>
+        Mahasiswa
       </h1>
       <ol class="breadcrumb">
-        <li><a href="index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Pesan</li>
+        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>        
+        <li class="active">Mahasiswa</li>
       </ol>
     </section>
 
@@ -252,130 +254,88 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
     <section class="content">
       <div class="row">
         <div class="col-md-3">
-          <a href="pesanbaru.php" class="btn btn-primary btn-block margin-bottom">Tulis Pesan</a>
+    <!-- Profile Image -->
+          <div class="box box-primary">
+            <div class="box-body box-profile">
+              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $user['foto'] ?>" alt="User profile picture">
 
-          <div class="box box-solid">
-            <div class="box-header with-border">
-              <h3 class="box-title">Folders</h3>
+              <h3 class="profile-username text-center"><?php echo $user['nama'] ?></h3>
 
-              <div class="box-tools">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body no-padding">
-              <ul class="nav nav-pills nav-stacked">
-                <li id="kotakmasuk" class="active"><a href="mailbox.php?view=INBOX"><i class="fa fa-inbox"></i> Kotak Masuk
-                  <?php
-                    if($jumlahUNREAD>0){
-                      echo '<span class="label label-primary pull-right">'.$jumlahUNREAD.'</span></a></li>';
-                    }
-                  ?>
-                <li id="kotakkeluar"><a href="mailbox.php?view=OUTBOX"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
-                <!-- Baru diubah aga  -->
-                <li id="kotakfavorit"><a href="mailbox.php?view=FAVORITE"><i class="fa fa-star"></i> Favorite</a>
-                <li id="kotaksemua"><a href="mailbox.php?view=ALL"><i class="fa fa-inbox"></i> Semua Pesan 
-                  <span class="label label-warning pull-right"><?php echo $jumlahPesan ?></span></a>
-                </li>
-                
-              </ul>
+              <p class="text-muted text-center">NIM : <?php echo $user['nim'] ?>
             </div>
             <!-- /.box-body -->
           </div>
-          <!-- /. box -->
-          
-        </div>
-        <!-- /.col -->
-        <div class="col-md-9">
+      </div>
+        <!-- left column -->
+        <div class="col-md-6">
+          <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title"><?php echo $tipe; ?></h3>
+              <h3 class="box-title">Form Edit</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-              <div class="mailbox-controls">
-                <!-- Check all button -->
-                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                </button>
-                <div class="btn-group">
-                  <button onclick="hapusBanyak()" type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
+            <!-- form start -->
+            <form method="post" action="../edit.php" role="form" enctype="multipart/form-data">
+              <div class="box-body">
+                <input name="nim" type="hidden" value="<?php echo $user['nim'] ?>">
+                <div class="form-group">
+                  <label for="exampleInputNamaMhs">Nama</label>
+                  <input name="nama" type="text" class="form-control" id="exampleInputMhs" placeholder="Masukkan Nama" value="<?php echo $user['nama'] ?>">
                 </div>
-                <!-- /.btn-group -->
-                <button onclick="refresh()" type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
-              </div>
-              <div class="table-responsive mailbox-messages">
-                <table class="table table-hover">
-                  <tbody id="listpesan">
-                    <?php
-                      switch ($tipe) {
-                        case 'OUTBOX':
-                          $sql = "select * from pesan where pengirim='".$user['nim']."'";
-                          break;
-                        case 'FAVORITE':
-                          $sql = "select * from pesan where (pengirim='".$user['nim']."' OR penerima='".$user['nim']."') AND favorit='FAVORITE'";
-                          break;
-                        case 'ALL':
-                          $sql = "select * from pesan where pengirim='".$user['nim']."' OR penerima='".$user['nim']."'";
-                          break;
-                        default:
-                          $sql = "select * from pesan where penerima='".$user['nim']."'";
-                          break;
+                <div class="form-group">
+                  <label for="exampleInputEmail">Email</label>
+                  <input name="email" type="email" class="form-control" id="exampleInputEmailMHS" placeholder="ex:email@mail.com" value="<?php echo $user['email'] ?>">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputGender">Jenis Kelamin</label><br/>
+                    <?php 
+                      if($user['jeniskelamin']=="Laki-Laki"){
+                        echo '
+                        <input type="radio" name="jeniskelamin" value="Laki-Laki" checked> Laki-Laki
+                        <input type="radio" name="jeniskelamin" value="Perempuan"> Perempuan';
                       }
-                      
-                      $sqla=mysql_query($sql);
-                      while($data = mysql_fetch_array($sqla)) {
-                        $sqlpengirim = mysql_query("select * from mahasiswa where nim='".$data['pengirim']."'");
-                        if(mysql_num_rows($sqlpengirim)<=0){
-                          $sqlpengirim = mysql_query("select * from dosen where nip='".$data['pengirim']."'");
-                        }
-                        $pengirim = mysql_fetch_assoc($sqlpengirim);
-                        $sqlpenerima = mysql_query("select * from mahasiswa where nim='".$data['penerima']."'");
-                        if(mysql_num_rows($sqlpenerima)<=0){
-                          $sqlpenerima = mysql_query("select * from dosen where nip='".$data['penerima']."'");
-                        }
-                        $penerima = mysql_fetch_assoc($sqlpenerima);
-                        $date = date_create($data['tanggal']);
-                        $tanggalkirim= date_format($date,"d M Y");
-                        $subject= substr($data['subject'],0,50);
-                        if($data['status']=="UNREAD"){
-                          echo '<tr style="background: #E3F2FD" id="'.$data['idpesan'].'">';
-                        }
-                        else{
-                          echo '<tr id="'.$data['idpesan'].'">';
-                        }
+                      else{
                         echo '
-                          <td><input type="checkbox"></td>';
-                        if($data['favorit']=="FAVORITE"){
-                          echo '<td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>';
-                        }
-                        else {
-                          echo '<td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>';
-                        }
-                        echo '
-                          <td class="mailbox-name"><a href="read.php?id='.$data['idpesan'].'"><b>'.$pengirim['nama'].'</b> > <b>'.$penerima['nama'].'</b></a></td>
-                          <td class="mailbox-subject">'.$subject.'
-                          </td>
-                          <td class="mailbox-date">'.$tanggalkirim.'</td>
-                        </tr>
-                        ';
+                        <input type="radio" name="jeniskelamin" value="Laki-Laki"> Laki-Laki
+                        <input type="radio" name="jeniskelamin" value="Perempuan" checked> Perempuan';
                       }
                     ?>
+                    
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputBirthday">Tanggal Lahir</label><br/>
+                    <input name="tanggallahir" type="date" class="form-control" placeholder="Calendar" value="<?php echo $user['tanggallahir'] ?>">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputBirthday">Deskripsi</label><br/>
+                    <textarea name="deskripsi"  class="form-control" placeholder="Deskripsi"><?php echo $user['deskripsi'] ?></textarea>
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="exampleInputJurusan">Jurusan</label><br/>
+                    <select name="jurusan" class="form-control selectpicker show-menu-arrow">              
+                      <option value="">Pilih Jurusan</option>                        
+                      <optgroup label="Fakultas MIPA"><option value="Informatika" data-subtext="MIPA">Informatika</option><option value="Biologi" data-subtext="Aceh">Biologi</option></optgroup>
+                      <optgroup label="Fakultas Teknik"><option value="Elektro" data-subtext="teknik">Elektro</option><option value="Arsitektur" data-subtext="Aceh">Arsitektur</option></optgroup>
+                      <optgroup label="Fakultas Ekonomi"><option value="Pembangunan" data-subtext="ekonomi">Pembangunan</option><option value="Manajemen" data-subtext="Aceh">Manajemen</option></optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputFile">Masukkan Foto</label>
+                  <input type="file" name="foto" id="foto">
 
-                  
-                  </tbody>
-                </table>
-                <!-- /.table -->
+                  <p class="help-block">Max 160 x 160 Pixel</p>
+                </div>
+                
               </div>
-              <!-- /.mail-box-messages -->
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /. box -->
-        </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
+              <!-- /.box-body -->
 
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div> 
+        </div>
+      </div>
     </section>
     <!-- /.content -->
   </div>
@@ -386,6 +346,11 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
     </div>
     <strong>Copyright &copy; 2016 <a href="#">infoDosen</a>.</strong> All rights reserved.
   </footer>
+
+  
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 
@@ -410,7 +375,7 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
 <!-- jQuery Knob Chart -->
 <script src="../plugins/knob/jquery.knob.js"></script>
 <!-- daterangepicker -->
-<script src="../https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="../plugins/daterangepicker/daterangepicker.js"></script>
 <!-- datepicker -->
 <script src="../plugins/datepicker/bootstrap-datepicker.js"></script>

@@ -5,17 +5,6 @@ if($_SESSION['level']!="mahasiswa"){
   header('Location: ../login.php');
 }
 $user=$userOnSession;
-$tipe="";
-if(!isset($_GET['view'])||empty($_GET['view'])){            
-  $tipe="INBOX";
-}
-else{
-  $tipe=strtoupper($_GET['view']);
-}
-
-if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
-  $tipe="INBOX";
-}
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +12,7 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Info Dosen - Pesan</title>
+  <title>Info Dosen - About Us</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -31,7 +20,7 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../dist/css/font-awesome.min.css">
   <!-- Ionicons -->
-  <link rel="stylesheet" href="../https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Style Buatan -->
   <link rel="stylesheet" href="../dist/css/style.css">
   <!-- Theme style -->
@@ -51,8 +40,6 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
   <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker-bs3.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="../plugins/iCheck/flat/blue.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -103,9 +90,6 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <?php
-                    $sql = "select * from pesan where penerima='".$user['nim']."' or pengirim='".$user['nim']."'";
-                    $sqla=mysql_query($sql);
-                    $jumlahPesan=mysql_num_rows($sqla);
                     $sql = "select * from pesan where penerima='".$user['nim']."' ORDER BY status DESC";
                     $sqla=mysql_query($sql);
                     for($i=0; ($data = mysql_fetch_array($sqla))&&$i<5; $i++) {
@@ -209,7 +193,7 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="active treeview">
+        <li class="treeview">
           <a href="mailbox.php">
             <i class="fa fa-envelope"></i>
             <span>Pesan</span>
@@ -228,157 +212,144 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
           </a>
         </li>
         <li class="header">CREDITS</li>
-        <li><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
+        <li class="active "><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+    <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pesan
-        <small>Mahasiswa</small>
+        Kredit
+        <small>Tentang Kami</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Pesan</li>
+        <li class="active">Tentang Kami</li>
       </ol>
     </section>
 
     <!-- Main content -->
-    <section class="content">
-      <div class="row">
-        <div class="col-md-3">
-          <a href="pesanbaru.php" class="btn btn-primary btn-block margin-bottom">Tulis Pesan</a>
-
-          <div class="box box-solid">
-            <div class="box-header with-border">
-              <h3 class="box-title">Folders</h3>
-
-              <div class="box-tools">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            <div class="box-body no-padding">
-              <ul class="nav nav-pills nav-stacked">
-                <li id="kotakmasuk" class="active"><a href="mailbox.php?view=INBOX"><i class="fa fa-inbox"></i> Kotak Masuk
-                  <?php
-                    if($jumlahUNREAD>0){
-                      echo '<span class="label label-primary pull-right">'.$jumlahUNREAD.'</span></a></li>';
-                    }
-                  ?>
-                <li id="kotakkeluar"><a href="mailbox.php?view=OUTBOX"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
-                <!-- Baru diubah aga  -->
-                <li id="kotakfavorit"><a href="mailbox.php?view=FAVORITE"><i class="fa fa-star"></i> Favorite</a>
-                <li id="kotaksemua"><a href="mailbox.php?view=ALL"><i class="fa fa-inbox"></i> Semua Pesan 
-                  <span class="label label-warning pull-right"><?php echo $jumlahPesan ?></span></a>
-                </li>
-                
-              </ul>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /. box -->
+    <section class="content">        
+      <!-- /.box -->      
+      <!-- Profil List -->
+      <div class="box box-primary">
+        <div class="box-header">
+          <i class="fa fa-users"></i>
+          <h3 class="box-title">TIM Pengembang</h3>
+        </div>
+        <div class="box-body">
+          <!-- Widget: list -->
           
-        </div>
-        <!-- /.col -->
-        <div class="col-md-9">
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title"><?php echo $tipe; ?></h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <div class="mailbox-controls">
-                <!-- Check all button -->
-                <button type="button" class="btn btn-default btn-sm checkbox-toggle"><i class="fa fa-square-o"></i>
-                </button>
-                <div class="btn-group">
-                  <button onclick="hapusBanyak()" type="button" class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i></button>
-                </div>
-                <!-- /.btn-group -->
-                <button onclick="refresh()" type="button" class="btn btn-default btn-sm"><i class="fa fa-refresh"></i></button>
+          <div class="col-md-4">
+              <!-- Widget: user widget style 1 -->
+              <div class="box box-widget widget-user" style="box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.3);">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-aqua-active" style="background: url('../assets/images/header1.jpg') center center;">
               </div>
-              <div class="table-responsive mailbox-messages">
-                <table class="table table-hover">
-                  <tbody id="listpesan">
-                    <?php
-                      switch ($tipe) {
-                        case 'OUTBOX':
-                          $sql = "select * from pesan where pengirim='".$user['nim']."'";
-                          break;
-                        case 'FAVORITE':
-                          $sql = "select * from pesan where (pengirim='".$user['nim']."' OR penerima='".$user['nim']."') AND favorit='FAVORITE'";
-                          break;
-                        case 'ALL':
-                          $sql = "select * from pesan where pengirim='".$user['nim']."' OR penerima='".$user['nim']."'";
-                          break;
-                        default:
-                          $sql = "select * from pesan where penerima='".$user['nim']."'";
-                          break;
-                      }
-                      
-                      $sqla=mysql_query($sql);
-                      while($data = mysql_fetch_array($sqla)) {
-                        $sqlpengirim = mysql_query("select * from mahasiswa where nim='".$data['pengirim']."'");
-                        if(mysql_num_rows($sqlpengirim)<=0){
-                          $sqlpengirim = mysql_query("select * from dosen where nip='".$data['pengirim']."'");
-                        }
-                        $pengirim = mysql_fetch_assoc($sqlpengirim);
-                        $sqlpenerima = mysql_query("select * from mahasiswa where nim='".$data['penerima']."'");
-                        if(mysql_num_rows($sqlpenerima)<=0){
-                          $sqlpenerima = mysql_query("select * from dosen where nip='".$data['penerima']."'");
-                        }
-                        $penerima = mysql_fetch_assoc($sqlpenerima);
-                        $date = date_create($data['tanggal']);
-                        $tanggalkirim= date_format($date,"d M Y");
-                        $subject= substr($data['subject'],0,50);
-                        if($data['status']=="UNREAD"){
-                          echo '<tr style="background: #E3F2FD" id="'.$data['idpesan'].'">';
-                        }
-                        else{
-                          echo '<tr id="'.$data['idpesan'].'">';
-                        }
-                        echo '
-                          <td><input type="checkbox"></td>';
-                        if($data['favorit']=="FAVORITE"){
-                          echo '<td class="mailbox-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></td>';
-                        }
-                        else {
-                          echo '<td class="mailbox-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></td>';
-                        }
-                        echo '
-                          <td class="mailbox-name"><a href="read.php?id='.$data['idpesan'].'"><b>'.$pengirim['nama'].'</b> > <b>'.$penerima['nama'].'</b></a></td>
-                          <td class="mailbox-subject">'.$subject.'
-                          </td>
-                          <td class="mailbox-date">'.$tanggalkirim.'</td>
-                        </tr>
-                        ';
-                      }
-                    ?>
-
-                  
-                  </tbody>
-                </table>
-                <!-- /.table -->
+              <div class="widget-user-image">
+                <img class="profile-user-img img-responsive img-circle" src="../assets/images/oya.jpg" alt="User Avatar">
               </div>
-              <!-- /.mail-box-messages -->
-            </div>
-            <!-- /.box-body -->
+              <div class="box-footer">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="description-block">
+                    <ul class="list-group list-group-unbordered">
+                
+                   <pre><h4>Muhammad Ridha Aulia</h4></pre>
+                
+                <li class="list-group-item">
+                    <i class="fa fa-code text-red"></i> Developer
+                </li> 
+                <li class="list-group-item">
+                    <a href="http://cs.unsyiah.ac.id/~maulia14"><i class="fa fa-globe text-red"></i> cs.unsyiah.ac.id/~maulia14</a>
+                </li>               
+              </ul>                                   
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                </div>                
+                <!-- /.row -->
+              </div>
+              </div>
+              <!-- /.widget-user -->
           </div>
-          <!-- /. box -->
-        </div>
-        <!-- /.col -->
+          <div class="col-md-4">
+              <!-- Widget: user widget style 1 -->
+              <div class="box box-widget widget-user" style="box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.3);">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-aqua-active" style="background: url('../assets/images/header1.jpg') center center;">
+              </div>
+              <div class="widget-user-image">
+                <img class="profile-user-img img-responsive img-circle" src="../assets/images/reki.jpg" alt="User Avatar">
+              </div>
+              <div class="box-footer">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="description-block">
+                    <ul class="list-group list-group-unbordered">
+                
+                   <pre><h4>Muhammad Reki Andika</h4></pre>
+                
+                <li class="list-group-item">
+                    <i class="fa fa-gg-circle text-red"></i> Developer & Designer
+                </li> 
+                <li class="list-group-item">
+                    <a href="http://cs.unsyiah.ac.id/~mndika"><i class="fa fa-globe text-red"></i> cs.unsyiah.ac.id/~mndika</a>
+                </li>               
+              </ul>                                   
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                </div>                
+                <!-- /.row -->
+              </div>
+              </div>
+              <!-- /.widget-user -->
+          </div>
+          <div class="col-md-4">
+              <!-- Widget: user widget style 1 -->
+              <div class="box box-widget widget-user" style="box-shadow: 0 0px 2px 1px rgba(0, 0, 0, 0.3);">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-aqua-active" style="background: url('../assets/images/header1.jpg') center center;">
+              </div>
+              <div class="widget-user-image">
+                <img class="profile-user-img img-responsive img-circle" src="../assets/images/aga.jpg" alt="User Avatar">
+              </div>
+              <div class="box-footer">
+                <div class="row">
+                  <div class="col-sm-12">
+                    <div class="description-block">
+                    <ul class="list-group list-group-unbordered">
+                
+                   <pre><h4>Aga Maulana</h4></pre>
+                
+                <li class="list-group-item">
+                    <i class="fa fa-code text-red"></i> Developer
+                </li> 
+                <li class="list-group-item">
+                    <a href="http://cs.unsyiah.ac.id/~aulana"><i class="fa fa-globe text-red"></i> cs.unsyiah.ac.id/~aulana</a>
+                </li>               
+              </ul>                                   
+                    </div>
+                    <!-- /.description-block -->
+                  </div>
+                </div>                
+                <!-- /.row -->
+              </div>
+              </div>
+              <!-- /.widget-user -->
+          </div>            
+        <!-- /.box-body -->
       </div>
-      <!-- /.row -->
+      
 
-    </section>
-    <!-- /.content -->
+        </section>
   </div>
+
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="pull-right hidden-xs">
@@ -386,6 +357,11 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
     </div>
     <strong>Copyright &copy; 2016 <a href="#">infoDosen</a>.</strong> All rights reserved.
   </footer>
+
+  
+  <!-- Add the sidebar's background. This div must be placed
+       immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
 </div>
 <!-- ./wrapper -->
 
@@ -410,7 +386,7 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
 <!-- jQuery Knob Chart -->
 <script src="../plugins/knob/jquery.knob.js"></script>
 <!-- daterangepicker -->
-<script src="../https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="../plugins/daterangepicker/daterangepicker.js"></script>
 <!-- datepicker -->
 <script src="../plugins/datepicker/bootstrap-datepicker.js"></script>
@@ -422,12 +398,12 @@ if($tipe!="INBOX"&&$tipe!="OUTBOX"&&$tipe!="FAVORITE"&&$tipe!="ALL"){
 <script src="../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/app.min.js"></script>
-<!-- iCheck -->
-<script src="../plugins/iCheck/icheck.min.js"></script>
 <!-- Page Script -->
-<script src="../assets/js/mailbox-mahasiswa.js"></script>
+<script src="../assets/js/dashboard-mahasiswa.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
 </body>
 </html>
 

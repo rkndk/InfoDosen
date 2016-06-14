@@ -52,7 +52,7 @@ $tanggalkirimpesan= date_format($date,"d M Y");
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>JUDUL HAHAHAHA</title>
+  <title>Info Dosen - Baca Pesan</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -97,9 +97,9 @@ $tanggalkirimpesan= date_format($date,"d M Y");
     <!-- Logo -->
     <a href="index.php" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>H</b>JD</span>
+      <span class="logo-mini"><b>i</b>D</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>HAHAHA</b>JUDUL</span>
+      <span class="logo-lg"><b>info</b>DOSEN</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -153,7 +153,7 @@ $tanggalkirimpesan= date_format($date,"d M Y");
                         echo '<li>';
                       }
                       echo '
-                        <a href="#">
+                        <a href="read.php?id='.$data['idpesan'].'">
                           <div class="pull-left">
                             <img src="../assets/images/'.$pengirim['foto'].'" class="img-circle" alt="User Image">
                           </div>
@@ -168,7 +168,7 @@ $tanggalkirimpesan= date_format($date,"d M Y");
                   ?>
                 </ul>
               </li>
-              <li class="footer"><a href="#">Lihat Semua Pesan</a></li>
+              <li class="footer"><a href="mailbox.php">Lihat Semua Pesan</a></li>
             </ul>
           </li>
          
@@ -228,13 +228,13 @@ $tanggalkirimpesan= date_format($date,"d M Y");
           </a>
         </li>
         <li class="treeview">
-          <a href="#">
+          <a href="mailbox.php">
             <i class="fa fa-envelope"></i>
             <span>Pesan</span>
           </a>
         </li>
         <li class="header">CREDITS</li>
-        <li><a href="#"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
+        <li><a href="aboutus.php"><i class="fa fa-users"></i> <span>Tentang Kami</span></a></li>
       </ul>
     </section>
     <!-- /.sidebar -->
@@ -271,16 +271,16 @@ $tanggalkirimpesan= date_format($date,"d M Y");
             </div>
             <div class="box-body no-padding">
               <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#"><i class="fa fa-inbox"></i> Kotak Masuk
+                <li class="active"><a href="mailbox.php?view=INBOX"><i class="fa fa-inbox"></i> Kotak Masuk
                   <?php
                     if($jumlahUNREAD>0){
                       echo '<span class="label label-primary pull-right">'.$jumlahUNREAD.'</span></a></li>';
                     }
                   ?>
-                <li><a href="#"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
+                <li><a href="mailbox.php?view=OUTBOX"><i class="fa fa-envelope-o"></i> Pesan Terkirim</a></li>
                 <!-- Baru diubah aga  -->
-                <li><a href="#"><i class="fa fa-star"></i> Favorite</a>
-                <li><a href="#"><i class="fa fa-inbox"></i> Semua Pesan 
+                <li><a href="mailbox.php?view=FAVORITE"><i class="fa fa-star"></i> Favorite</a>
+                <li><a href="mailbox.php?view=ALL"><i class="fa fa-inbox"></i> Semua Pesan 
                   <span class="label label-warning pull-right"><?php echo $jumlahPesan ?></span></a>
                 </li>
                 
@@ -344,7 +344,7 @@ $tanggalkirimpesan= date_format($date,"d M Y");
     <div class="pull-right hidden-xs">
       <b>Version</b> 1.0
     </div>
-    <strong>Copyright &copy; 2016 <a href="#">HAHA</a>.</strong> All rights reserved.
+    <strong>Copyright &copy; 2016 <a href="#">infoDosen</a>.</strong> All rights reserved.
   </footer>
 
   
