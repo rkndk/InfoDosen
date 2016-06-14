@@ -31,11 +31,12 @@
     );
   }
 
-  function unsubscibe(id){
+  function unsubscibe(pelajaran,nim){
   	$.post("../subscribe.php",
       {
           tipe: "unsubscribe",
-          id: id
+          user: nim,
+          pelajaran: pelajaran
       },
       function(data, status){
           window.location.href="index.php";
@@ -179,11 +180,12 @@
     }
   }
 
-  function hapussubscribe(id){
+  function hapussubscribe(pelajaran, nim){
     $.post("../subscribe.php",
       {
           tipe: "unsubscribe",
-          id: id
+          user: nim,
+          pelajaran: pelajaran
       },
       function(data, status){
           window.location.href="index.php";
@@ -191,11 +193,12 @@
     );
   }
 
-  function acceptsubscribe(id){
+  function acceptsubscribe(pelajaran, nim){
     $.post("../subscribe.php",
       {
           tipe: "accept",
-          id: id
+          user: nim,
+          pelajaran: pelajaran
       },
       function(data, status){
           window.location.href="index.php";

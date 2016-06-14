@@ -318,7 +318,7 @@ $user=$userOnSession;
                                             <tr>
                                               <td>'.$subscriber['nim'].'</td>
                                               <td>'.$subscriber['nama'].'</td>
-                                              <td><button onclick="hapussubscribe('.$subscriber['id'].')" type="button" class="btn-xs btn-danger"><i class="fa fa-close"></i></button> <button onclick="acceptsubscribe('.$subscriber['id'].')" type="button" class="btn-xs btn-success btn-flat"><i class="fa fa-check"></i></button></td>
+                                              <td><button onclick="hapussubscribe('.$subscriber['pelajaran'].','.$subscriber['nim'].')" type="button" class="btn-xs btn-danger"><i class="fa fa-close"></i></button> <button onclick="acceptsubscribe('.$subscriber['pelajaran'].','.$subscriber['nim'].')" type="button" class="btn-xs btn-success btn-flat"><i class="fa fa-check"></i></button></td>
                                             </tr>
                                           ';
                                         }
@@ -349,7 +349,7 @@ $user=$userOnSession;
                                             <tr>
                                               <td>'.$subscriber['nim'].'</td>
                                               <td>'.$subscriber['nama'].'</td>
-                                              <td><button onclick="hapussubscribe('.$subscriber['id'].')" type="button" class="btn-xs btn-danger"><i class="fa fa-close"></i></button></td>
+                                              <td><button onclick="hapussubscribe('.$subscriber['pelajaran'].','.$user['nip'].')" type="button" class="btn-xs btn-danger"><i class="fa fa-close"></i></button></td>
                                             </tr>
                                           ';
                                         }

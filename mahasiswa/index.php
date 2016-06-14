@@ -174,11 +174,11 @@ $user=$userOnSession;
         </div>
       </div>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <form action="cari.php" method="get" class="sidebar-form">
         <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <input type="text" name="dosen" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                <button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
               </span>
         </div>
@@ -200,15 +200,9 @@ $user=$userOnSession;
           </a>
         </li>
         <li class="treeview">
-          <a href="dosen.php">
+          <a href="profil.php">
             <i class="fa fa-user"></i>
-            <span>Profil Dosen</span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="tugas.php">
-            <i class="fa fa-flag"></i>
-            <span>Tugas</span>
+            <span>Profil</span>
           </a>
         </li>
         <li class="header">CREDITS</li>
@@ -309,7 +303,7 @@ $user=$userOnSession;
                                             <tr>
                                               <td>'.$subscriber['nim'].'</td>
                                               <td>'.$subscriber['nama'].'</td>
-                                              <td><button onclick="hapussubscribe('.$subscriber['id'].')" type="button" class="btn-xs btn-danger"><i class="fa fa-close"></i></button> <button onclick="acceptsubscribe('.$subscriber['id'].')" type="button" class="btn-xs btn-success btn-flat"><i class="fa fa-check"></i></button></td>
+                                              <td><button onclick="hapussubscribe('.$subscriber['pelajaran'].','.$subscriber['nim'].')" type="button" class="btn-xs btn-danger"><i class="fa fa-close"></i></button> <button onclick="acceptsubscribe('.$subscriber['pelajaran'].','.$subscriber['nim'].')" type="button" class="btn-xs btn-success btn-flat"><i class="fa fa-check"></i></button></td>
                                             </tr>
                                           ';
                                         }
@@ -340,7 +334,7 @@ $user=$userOnSession;
                                             <tr>
                                               <td>'.$subscriber['nim'].'</td>
                                               <td>'.$subscriber['nama'].'</td>
-                                              <td><button onclick="hapussubscribe('.$subscriber['id'].')" type="button" class="btn-xs btn-danger"><i class="fa fa-close"></i></button></td>
+                                              <td><button onclick="hapussubscribe('.$subscriber['pelajaran'].','.$subscriber['nim'].')" type="button" class="btn-xs btn-danger"><i class="fa fa-close"></i></button></td>
                                             </tr>
                                           ';
                                         }
@@ -549,7 +543,7 @@ $user=$userOnSession;
                                 <div class="row">
                                   <div class="col-sm-4 border-right">
                                     <div style="font-size: 20px;" class="description-block">
-                                      <a href="/dosen/?nip='.$data["nip"].'">
+                                      <a href="dosen.php?nip='.$data["nip"].'">
                                         <i class="fa fa-user" data-toggle="tooltip" title="Lihat Profil"></i>
                                       </a>
                                     </div>
@@ -725,7 +719,7 @@ $user=$userOnSession;
                                     }
                                 }
                                     echo '
-                                    <button type="button" onclick="unsubscibe('.$data['id'].')" class="btn btn-danger pull-right"><i class="fa fa-close"></i> BATAL IKUTI</button>
+                                    <button type="button" onclick="unsubscibe('.$data['idpelajaran'].','.$data['nim'].')" class="btn btn-danger pull-right"><i class="fa fa-close"></i> BATAL IKUTI</button>
                                 </div><!-- /.box-body -->
                               </div><!-- /.box -->
                             </div>';

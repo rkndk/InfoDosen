@@ -186,11 +186,11 @@ $dosen=mysql_fetch_assoc($sqla);
         </div>
       </div>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <form action="cari.php" method="get" class="sidebar-form">
         <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <input type="text" name="dosen" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                <button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
               </span>
         </div>
@@ -212,15 +212,9 @@ $dosen=mysql_fetch_assoc($sqla);
           </a>
         </li>
         <li class="treeview">
-          <a href="dosen.php">
+          <a href="profil.php">
             <i class="fa fa-user"></i>
-            <span>Profil Dosen</span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="tugas.php">
-            <i class="fa fa-flag"></i>
-            <span>Tugas</span>
+            <span>Profil</span>
           </a>
         </li>
         <li class="header">CREDITS</li>
@@ -330,7 +324,17 @@ $dosen=mysql_fetch_assoc($sqla);
                       echo '
                       <tr id="'.$matakuliah['idpelajaran'].'">
                         <td>'.$matakuliah['nama'].'</td>
-                        <td class="haha-star"><a href="#"><i class="fa fa-eye-slash text-green"></i> Ikuti</a></td>
+                        <td id="'.$user['nim'].'" class="haha-star"><a href="#">';
+                      $statussubscribe=mysql_query("select * from subscribe where pelajaran='".$matakuliah['idpelajaran']."' AND nim='".$user['nim']."'");
+                      if(mysql_num_rows($statussubscribe)==0){
+                        echo '<i class="fa fa-eye text-green"></i> Ikuti';
+                      }
+                      else{
+                        echo '<i class="fa fa-eye-slash text-green"></i> Ikuti';
+                      }
+                      
+                      echo '
+                        </a></td>
                       </tr>';
                     }
                   ?>               
@@ -412,6 +416,7 @@ $dosen=mysql_fetch_assoc($sqla);
       var glyph = $this.hasClass("glyphicon");
       var fa = $this.hasClass("fa");
       var trid = $(this).closest('tr').attr('id');
+      var tdid = $(this).closest('td').attr('id');
 
       //Switch states
       if (glyph) {
@@ -424,19 +429,20 @@ $dosen=mysql_fetch_assoc($sqla);
         $this.toggleClass("fa-eye-slash");
       }
       if(!$this.hasClass("fa-eye")){
-        subscribe("subscribe",trid);
+        subscribe("subscribe",trid,tdid);
       }
       else{
-        subscribe("unsubscribe",trid);
+        subscribe("unsubscribe",trid,tdid);
       }
     });
   });
 
-  function subscribe(tipe, id){
+  function subscribe(tipe, pelajaran, user){
     $.post("../subscribe.php",
       {
           tipe: tipe,
-          id: id
+          user: user,
+          pelajaran: pelajaran
       },
       function(data, status){
       }

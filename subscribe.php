@@ -6,16 +6,19 @@
 	$pelajaran = $_POST['pelajaran'];
 	
 	if($tipe=="subscribe"){
-		mysql_query("insert into subscribe(nim,pelajaran,status)  values('".$user['nim']."','".$pelajaran."','PENDING')", $connection) or die(mysql_error());
+		$sqla=mysql_query("select * from subscribe where nim='".$user['nim']."' AND pelajaran='".$pelajaran."'");
+		if(mysql_num_rows($sqla)==0){
+			mysql_query("insert into subscribe(nim,pelajaran,status)  values('".$user['nim']."','".$pelajaran."','PENDING')", $connection) or die(mysql_error());	
+		}
 	}
 	elseif ($tipe=="unsubscribe") {
-		$id = $_POST['id'];
-		mysql_query("DELETE from subscribe WHERE id='".$id."'",$connection) or die(mysql_error());
+		$user = $_POST['user'];
+		mysql_query("DELETE from subscribe WHERE nim='".$user."' AND pelajaran='".$pelajaran."'",$connection) or die(mysql_error());	
 	}
 
 	elseif ($tipe=="accept") {
-		$id = $_POST['id'];
-		mysql_query("UPDATE subscribe SET status='APPROVED' WHERE id=".$id, $connection) or die(mysql_error());
+		$user = $_POST['user'];
+		mysql_query("UPDATE subscribe SET status='APPROVED' WHERE nim='".$user."' AND pelajaran='".$pelajaran."'", $connection) or die(mysql_error());
 	}
     mysql_close($connection);
 ?>

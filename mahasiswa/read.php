@@ -219,11 +219,11 @@ $tanggalkirim= date_format($date,"d M Y");
         </div>
       </div>
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <form action="cari.php" method="get" class="sidebar-form">
         <div class="input-group">
-          <input type="text" name="q" class="form-control" placeholder="Search...">
+          <input type="text" name="dosen" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                <button type="submit" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
                 </button>
               </span>
         </div>
@@ -245,15 +245,9 @@ $tanggalkirim= date_format($date,"d M Y");
           </a>
         </li>
         <li class="treeview">
-          <a href="dosen.php">
+          <a href="profil.php">
             <i class="fa fa-user"></i>
-            <span>Profil Dosen</span>
-          </a>
-        </li>
-        <li class="treeview">
-          <a href="tugas.php">
-            <i class="fa fa-flag"></i>
-            <span>Tugas</span>
+            <span>Profil</span>
           </a>
         </li>
         <li class="header">CREDITS</li>

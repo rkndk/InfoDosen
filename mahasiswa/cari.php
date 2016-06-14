@@ -5,20 +5,10 @@ if($_SESSION['level']!="mahasiswa"){
   header('Location: ../login.php');
 }
 $user=$userOnSession;
-$profil=array();
-if(!isset($_GET['nim'])||empty($_GET['nim'])){            
-  $profil=$user;
+$pencarian="";
+if(isset($_GET['dosen'])){
+  $pencarian=$_GET['dosen'];
 }
-else{
-  $sqla=mysql_query("select * from mahasiswa where nim='".$_GET['nim']."'");
-  if(mysql_num_rows($sqla)>0){
-    $profil=mysql_fetch_assoc($sqla);
-  }
-  else{
-    header("Location: index.php");
-  }
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +16,7 @@ else{
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Info Dosen - Profil</title>
+  <title>Info Dosen - Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -54,8 +44,6 @@ else{
   <link rel="stylesheet" href="../plugins/daterangepicker/daterangepicker-bs3.css">
   <!-- bootstrap wysihtml5 - text editor -->
   <link rel="stylesheet" href="../plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="../plugins/iCheck/flat/blue.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -106,9 +94,6 @@ else{
                 <!-- inner menu: contains the actual data -->
                 <ul class="menu">
                   <?php
-                    $sql = "select * from pesan where penerima='".$user['nim']."' or pengirim='".$user['nim']."'";
-                    $sqla=mysql_query($sql);
-                    $jumlahPesan=mysql_num_rows($sqla);
                     $sql = "select * from pesan where penerima='".$user['nim']."' ORDER BY status DESC";
                     $sqla=mysql_query($sql);
                     for($i=0; ($data = mysql_fetch_array($sqla))&&$i<5; $i++) {
@@ -206,7 +191,7 @@ else{
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">NAVIGATION</li>
-        <li class="treeview">
+        <li class="active treeview">
           <a href="index.php">
             <i class="fa fa-dashboard"></i>
             <span>Dashboard</span>
@@ -233,75 +218,123 @@ else{
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Mahasiswa
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-home"></i> Home</a></li>        
-        <li class="active">Mahasiswa</li>
-      </ol>
-    </section>
 
     <!-- Main content -->
     <section class="content">
-
-      <div class="row">
-        <div class="col-md-4">
-
-          <!-- Profile Image -->
-          <div class="box box-primary">
-            <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $profil['foto'] ?>" alt="User profile picture">
-
-              <h3 class="profile-username text-center"><?php echo $profil['nama'] ?></h3>
-
-              <p class="text-muted text-center">NPM : <?php echo $profil['nim'] ?></p>
-
-              <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                   <div class="knob-label"> <?php echo $profil['deskripsi'] ?> </div>
-                </li>                
-              </ul>
-
-              <a href="editprofil.php" class="btn btn-primary btn-block"><b>Edit</b></a>
-              <a href="gantipassword.php" class="btn btn-primary btn-block"><b>Ganti Password</b></a>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-
-
+      <!-- Main row -->
+      <!-- Pemberitahuan
+      <div class="row col-md-12 center-block">              
+        <div class="callout callout-info lead">
+            <h4>Pemberitahuan!</h4>
+            <p>Program sistem informasi kamunitas akademik berbasis web.</p>
         </div>
-          <div class="col-md-8">
-          <div class="box box-solid">
-            <div class="box-header with-border">
-              <i class="fa fa-user"></i>
-
-              <h3 class="box-title">Biodata</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <dl class="dl-horizontal">
-                <dt>Jenis Kelamin :</dt>
-                <dd><?php echo $profil['jeniskelamin'] ?></dd>
-                <dt>Jurusan :</dt>
-                <dd><?php echo $profil['jurusan'] ?></dd>
-                <dt>Email :</dt>
-                <dd><?php echo $profil['email'] ?></dd>
-                <dt>Tanggal Lahir :</dt>
-                <dd><?php echo $profil['tanggallahir'] ?></dd>
-              </dl>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-        </div>
-        <!-- ./col -->
       </div>
-      <!-- /.row -->
-      <!-- END TYPOGRAPHY -->
+      -->
+      <div class="row">
+        <!-- Left col -->
+        <section class="col-md-12">
+            
+            <!-- Dosen List -->
+            <div class="box box-solid box-info">
+              <div class="box-header">
+                <i class="fa fa-users"></i>
+                <h3 class="box-title">Hasil Pencarian Dosen</h3>
+              </div>
+              <div class="box-body">
+                <!-- Widget: list -->
+                
+                
+                
+                <?php
+                  $sql = "select * from favorit RIGHT JOIN dosen on favorit.nim='".$user['nim']."' AND favorit.nip=dosen.nip WHERE dosen.nama LIKE '%".$pencarian."%' OR dosen.nip LIKE '%".$pencarian."%'";
+                  $sqla=mysql_query($sql);
+                  if(mysql_num_rows($sqla)>0){
+                    while($data = mysql_fetch_array($sqla)) {
+                      echo ' 
+                            <section id="'.$data["nip"].'" class="col-md-4">
+                                <!-- Widget: user widget style 1 -->
+                              <div class="box box-widget widget-user" style="box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.3);">
+                                <!-- Add the bg color to the header using any of the bg-* classes -->
+                                <div class="widget-user-header bg-aqua-active">
+                                  <h3 class="widget-user-username">'.$data["nama"].'</h3>
+                                  <h5 class="widget-user-desc">'.$data["nip"].'</h5>
+                                </div>
+                                <div class="widget-user-image">
+                                  <img class="img-circle" src="../assets/images/'.$data["foto"].'" alt="User Avatar">
+                                </div>
+                                <div class="box-footer">
+                                  <div class="row">
+                                    <div class="col-sm-12">
+                                      <div class="description-block">';
+                                      
+                                      switch($data['status']){
+                                        case 'AVAILABLE': echo '<i class="fa fa-circle text-green"></i>'; break;
+                                        case 'UNAVAILABLE': echo '<i class="fa fa-circle text-red"></i>'; break;
+                                        case 'BUSY': echo '<i class="fa fa-circle text-yellow"></i>'; break;
+                                      }
+                                      echo '
+                                      <span class="description-text">'.$data['status'].'</span>
+                                      </div>
+                                      <!-- /.description-block -->
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-sm-4 border-right">
+                                      <div style="font-size: 20px;" class="description-block">
+                                        <a href="dosen.php?nip='.$data["nip"].'">
+                                          <i class="fa fa-user" data-toggle="tooltip" title="Lihat Profil"></i>
+                                        </a>
+                                      </div>
+                                      <!-- /.description-block -->
+                                    </div>
+                                    <div class="col-sm-4 border-right">
+                                      <div style="font-size: 20px;" class="description-block">';
+                                        if(!empty($data['nim'])){
+                                          echo '<div class="favorit-star"><a href="#"><i class="fa fa-star text-yellow"></i></a></div>';
+                                        }
+                                        else{
+                                          echo '<div class="favorit-star"><a href="#"><i class="fa fa-star-o text-yellow"></i></a></div>'; 
+                                        }
+                                    echo '
+                                      </div>
+                                      <!-- /.description-block -->
+                                    </div>
+                                    <!-- /.col -->
+                                    <div class="col-sm-4">
+                                      <div style="font-size: 20px;" class="description-block">
+                                      <a href="pesanbaru.php?ke='.$data["nip"].'">
+                                        <i class="fa fa-envelope" data-toggle="tooltip" title="Kirim Pesan"></i>
+                                      </a>
+                                      </div>
+                                      <!-- /.description-block -->
+                                    </div>
+                                    <!-- /.col -->
+                                  </div>
+                                  <!-- /.row -->
+                                </div>
+                              </div>
+                                <!-- /.widget-user -->
+                            </section>';
+                    }
+                  }
+                  
+                ?>
+
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+
+          
+
+        </section>
+        
+        
+         
+        <!-- right col -->
+      </div>
+      <!-- /.row (main row) -->
+
     </section>
     <!-- /.content -->
   </div>
@@ -353,12 +386,12 @@ else{
 <script src="../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="../dist/js/app.min.js"></script>
-<!-- iCheck -->
-<script src="../plugins/iCheck/icheck.min.js"></script>
 <!-- Page Script -->
-<script src="../assets/js/mailbox-mahasiswa.js"></script>
+<script src="../assets/js/dashboard-mahasiswa.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../dist/js/demo.js"></script>
 </body>
 </html>
 

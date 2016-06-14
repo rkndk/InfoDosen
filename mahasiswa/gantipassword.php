@@ -5,20 +5,25 @@ if($_SESSION['level']!="mahasiswa"){
   header('Location: ../login.php');
 }
 $user=$userOnSession;
-$profil=array();
-if(!isset($_GET['nim'])||empty($_GET['nim'])){            
-  $profil=$user;
-}
-else{
-  $sqla=mysql_query("select * from mahasiswa where nim='".$_GET['nim']."'");
-  if(mysql_num_rows($sqla)>0){
-    $profil=mysql_fetch_assoc($sqla);
+if(isset($_POST['submit'])){
+  $passwordlama=$_POST['passwordlama'];
+  $passwordbaru=$_POST['passwordbaru'];
+  $konfirmasipassword=$_POST['konfirmasipassword'];
+
+  if($passwordbaru!=$konfirmasipassword){
+    header("location: gantipassword.php?gagal");
   }
   else{
-    header("Location: index.php");
+    $sqla=mysql_query("select * from mahasiswa where nim='".$user['nim']."' AND password='".$passwordlama."'");
+    if(mysql_num_rows($sqla)==1){
+      mysql_query("UPDATE mahasiswa SET password='".$passwordbaru."' WHERE nim='".$nim."'", $connection) or die(mysql_error());
+      header("location: gantipassword.php?sukses");
+    }
+    else{
+      header("location: gantipassword.php?gagal");
+    }
   }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -26,7 +31,7 @@ else{
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Info Dosen - Profil</title>
+  <title>Info Dosen - Edit Profil</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
@@ -63,8 +68,28 @@ else{
   <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
   <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
   <![endif]-->
+
+  <script type="text/javascript">
+    function sukses(){
+      alert("Password Berhasil Diganti");
+    }
+    function gagal(){
+      alert("Password Gagal Diganti");
+    }
+  </script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini">
+
+<?php
+  if(isset($_GET['sukses'])){
+    echo '<body class="hold-transition skin-blue sidebar-mini" onload="sukses()">';
+  }
+  else if(isset($_GET['gagal'])){
+    echo '<body class="hold-transition skin-blue sidebar-mini" onload="gagal()">';
+  }
+  else{
+    echo '<body class="hold-transition skin-blue sidebar-mini">';
+  }
+?>
 <div class="wrapper">
 
   <header class="main-header">
@@ -212,7 +237,7 @@ else{
             <span>Dashboard</span>
           </a>
         </li>
-        <li class="treeview">
+        <li class="active treeview">
           <a href="mailbox.php">
             <i class="fa fa-envelope"></i>
             <span>Pesan</span>
@@ -246,62 +271,53 @@ else{
 
     <!-- Main content -->
     <section class="content">
-
       <div class="row">
-        <div class="col-md-4">
-
-          <!-- Profile Image -->
+        <div class="col-md-3">
+    <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $profil['foto'] ?>" alt="User profile picture">
+              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $user['foto'] ?>" alt="User profile picture">
 
-              <h3 class="profile-username text-center"><?php echo $profil['nama'] ?></h3>
+              <h3 class="profile-username text-center"><?php echo $user['nama'] ?></h3>
 
-              <p class="text-muted text-center">NPM : <?php echo $profil['nim'] ?></p>
-
-              <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                   <div class="knob-label"> <?php echo $profil['deskripsi'] ?> </div>
-                </li>                
-              </ul>
-
-              <a href="editprofil.php" class="btn btn-primary btn-block"><b>Edit</b></a>
-              <a href="gantipassword.php" class="btn btn-primary btn-block"><b>Ganti Password</b></a>
+              <p class="text-muted text-center">NIM : <?php echo $user['nim'] ?>
             </div>
             <!-- /.box-body -->
           </div>
-          <!-- /.box -->
-
-
-        </div>
-          <div class="col-md-8">
-          <div class="box box-solid">
+      </div>
+        <!-- left column -->
+        <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="box box-primary">
             <div class="box-header with-border">
-              <i class="fa fa-user"></i>
-
-              <h3 class="box-title">Biodata</h3>
+              <h3 class="box-title">Ganti Password</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-              <dl class="dl-horizontal">
-                <dt>Jenis Kelamin :</dt>
-                <dd><?php echo $profil['jeniskelamin'] ?></dd>
-                <dt>Jurusan :</dt>
-                <dd><?php echo $profil['jurusan'] ?></dd>
-                <dt>Email :</dt>
-                <dd><?php echo $profil['email'] ?></dd>
-                <dt>Tanggal Lahir :</dt>
-                <dd><?php echo $profil['tanggallahir'] ?></dd>
-              </dl>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <!-- form start -->
+            <form method="post" action="gantipassword.php" role="form">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputNamaMhs">Password Lama</label>
+                  <input name="nama" type="password" class="form-control" id="exampleInputMhs" placeholder="Password Lama" required>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputNamaMhs">Password Baru</label>
+                  <input name="passwordbaru" type="password" class="form-control" id="exampleInputMhs" placeholder="Password Baru" required>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputNamaMhs">Konfirmasi Password</label>
+                  <input name="konfirmasipassword" type="password" class="form-control" id="exampleInputMhs" placeholder="Konfirmasi Password" required>
+                </div>
+              </div>
+              <!-- /.box-body -->
+
+              <div class="box-footer">
+                <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div> 
         </div>
-        <!-- ./col -->
       </div>
-      <!-- /.row -->
-      <!-- END TYPOGRAPHY -->
     </section>
     <!-- /.content -->
   </div>

@@ -44,11 +44,12 @@
       );
   }
 
-  function hapussubscribe(id){
+  function hapussubscribe(pelajaran, nip){
     $.post("../subscribe.php",
       {
           tipe: "unsubscribe",
-          id: id
+          user: nip,
+          pelajaran: pelajaran
       },
       function(data, status){
           window.location.href="index.php";
@@ -56,11 +57,12 @@
     );
   }
 
-  function acceptsubscribe(id){
+  function acceptsubscribe(pelajaran, nip){
     $.post("../subscribe.php",
       {
           tipe: "accept",
-          id: id
+          user: nip,
+          pelajaran: pelajaran
       },
       function(data, status){
           window.location.href="index.php";
