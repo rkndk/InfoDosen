@@ -1,3 +1,14 @@
+<?php 
+include "session.php";
+include "koneksi.php";
+
+if(empty($_SESSION['user'])) {
+   header("Location: loginadmin.php");
+}
+
+
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,14 +18,14 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.6 -->
-  <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
-  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
+  <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
 
 </head>
 <body class="hold-transition skin-blue layout-top-nav">
@@ -24,7 +35,7 @@
     <nav class="navbar navbar-static-top">
       <div class="container">
         <div class="navbar-header">
-          <a href="#" class="navbar-brand"><b>Admin</b> IFCO</a>          
+          <a href="index.php" class="navbar-brand"><b>Admin</b> IFCO</a>          
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse pull-right" id="navbar-collapse">
@@ -52,29 +63,11 @@
         Data Dosen
       </h1>
     </section>
-    
-      
-
+        
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <div class="col-md-3">
-    <!-- Profile Image -->
-          <div class="box box-primary">
-            <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
-
-              <h3 class="profile-username text-center">Nina Mcintire</h3>
-
-              <p class="text-muted text-center">NIP : 14081070100   
-            </div>
-            <!-- /.box-body -->
-            <div class="box-footer">
-              <center>
-                <a href="#"><button type="submit" class="btn btn-primary">Ganti Password</button></a>
-              </center>
-              </div>
-          </div>
         </div>                        
         
         <!-- left column -->
@@ -82,11 +75,11 @@
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Form Edit</h3>
+              <h3 class="box-title">Form Daftar</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form">
+            <form action="index.php" role="form" method="post" enctype="multipart/form-data">
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputNama">Nama</label>
@@ -94,27 +87,26 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleInputNIP">NIP</label>
-                  <input name="NIP" type="text" class="form-control" id="exampleInputNIP" placeholder="14081070100">
+                  <input name="nip" type="text" class="form-control" id="exampleInputNIP" placeholder="14081070100">
                 </div>
-                <div class="form-group">
-                  <form>
+                <div class="form-group">                  
                     <label for="exampleInputGender">Jenis Kelamin</label><br/>
-                    <input type="radio" name="gender" value="male" checked> Male
-                    <input type="radio" name="gender" value="female"> Female
-                  </form>
+                    <input type="radio" name="gender" value="male" > Male
+                    <input type="radio" name="gender" value="female"> Female                  
                 </div>
                 <div class="form-group">
+                  <label for="exampleInputAbout">Deskripsi</label>
+                  <textarea name="deskripsi" class="form-control hresize" id="des"></textarea>        </div>
+                   <div class="form-group">
                   <label for="exampleInputAbout">About</label>
-                  <textarea name="deskripsi" class="form-control hresize" id="encJs2"></textarea>
-                  
-                </div>
+                  <textarea name="about" class="form-control hresize" id="about"></textarea>        </div>
                 <div class="form-group">
                   <label for="exampleInputAward">Award</label>
-                  <textarea name="award" class="form-control hresize" id="encJs2"></textarea>
+                  <textarea name="award" class="form-control hresize" id="award"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputAward">Misc</label>
-                  <textarea name="misc" class="form-control hresize" id="encJs2"></textarea>
+                  <textarea name="misc" class="form-control hresize" id="misc"></textarea>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputFile">Masukkan Foto</label>
@@ -151,16 +143,16 @@
 </div>
 <!-- ./wrapper -->
 <!-- jQuery 2.2.0 -->
-<script src="../../plugins/jQuery/jQuery-2.2.0.min.js"></script>
+<script src="../plugins/jQuery/jQuery-2.2.0.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
-<script src="../../bootstrap/js/bootstrap.min.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 <!-- SlimScroll -->
-<script src="../../plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<script src="../plugins/slimScroll/jquery.slimscroll.min.js"></script>
 <!-- FastClick -->
-<script src="../../plugins/fastclick/fastclick.js"></script>
+<script src="../plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
-<script src="../../dist/js/app.min.js"></script>
+<script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
+<script src="../dist/js/demo.js"></script>
 </body>
 </html>

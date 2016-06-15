@@ -64,14 +64,14 @@ $pdf->setFillColor(136,69,19);
 $pdf->setTextColor(0,0,0);
 $pdf->setDrawColor(222,184,135);
 $pdf->Ln();
-$pdf->Cell(50,10,'Pengirim : '.$pengirim,1,0,'L');
+$pdf->Cell(187,10,'Pengirim : '.$pengirim,1,0,'L');
 $pdf->Ln();
-$pdf->Cell(50,10,'Penerima : '.$penerima,1,0,'L');
+$pdf->Cell(187,10,'Penerima : '.$penerima,1,0,'L');
 $pdf->Ln();
 $pdf->Ln();
 $pdf->Cell(10,5,'Isi Pesan: ',0,1,'L');
 $pdf->Ln();
-$pdf->Cell(0,1,$isipesan,0,1,'L');
+$pdf->Cell(187,70,$isipesan,1,0,'L');
 
 $pdf->Output();
 
