@@ -1,6 +1,6 @@
 <?php 
 include "session.php";
-include "koneksi.php";
+include "../koneksi.php";
 
 if(empty($_SESSION['user'])) {
    header("Location: loginadmin.php");
@@ -20,9 +20,7 @@ if(empty($_SESSION['user'])) {
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="../dist/css/font-awesome.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -87,7 +85,11 @@ if(empty($_SESSION['user'])) {
                 </div>
                 <div class="form-group">
                   <label for="exampleInputNIP">NIP</label>
-                  <input name="nip" type="text" class="form-control" id="exampleInputNIP" placeholder="14081070100">
+                  <input name="nip" type="number" class="form-control" id="exampleInputNIP" placeholder="NIP">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputNIP">Email</label>
+                  <input name="email" type="email" class="form-control" id="exampleInputNIP" placeholder="Email">
                 </div>
                 <div class="form-group">                  
                     <label for="exampleInputGender">Jenis Kelamin</label><br/>

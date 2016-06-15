@@ -1,3 +1,27 @@
+<?php 
+include "session.php";
+include "../koneksi.php";
+
+if(empty($_SESSION['user'])) {
+   header("Location: loginadmin.php");
+}
+
+$profil=array();
+if(!isset($_GET['nip'])||empty($_GET['nip'])){            
+    header("Location: index.php");
+}
+else{
+  $sqla=mysql_query("select * from dosen where nip='".$_GET['nip']."'");
+  if(mysql_num_rows($sqla)>0){
+    $profil=mysql_fetch_assoc($sqla);
+  }
+  else{
+    header("Location: index.php");
+  }
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,9 +33,7 @@
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="../dist/css/font-awesome.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -62,23 +84,18 @@
     <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $profil['foto'] ?>" alt="User profile picture">
 
-              <h3 class="profile-username text-center">Nina Mcintire</h3>
+              <h3 class="profile-username text-center"><?php echo $profil['nama'] ?></h3>
 
-              <p class="text-muted text-center">NIP : 14081070100   
+              <p class="text-muted text-center">NIP : <?php echo $profil['nip'] ?>  
             </div>
             <!-- /.box-body -->
-            <div class="box-footer">
-              <center>
-                <a href="#"><button type="submit" class="btn btn-primary">Ganti Password</button></a>
-              </center>
-              </div>
           </div>
         </div>                        
         
         <!-- left column -->
-        <div class="col-md-6">
+        <div class="col-md-5">
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
@@ -86,35 +103,36 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form">
+            <form role="form" action="index.php" method="post" enctype="multipart/form-data">
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputNama">Nama</label>
-                  <input name="nama" type="text" class="form-control" id="exampleInputEmail1" placeholder="Masukkan Nama">
+                  <input name="nama" type="text" class="form-control" id="exampleInputEmail1" placeholder="Masukkan Nama" value=<?php echo $profil['nama'] ?>>
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputNIP">NIP</label>
-                  <input name="NIP" type="text" class="form-control" id="exampleInputNIP" placeholder="14081070100">
+                  <input name="nip" type="hidden" class="form-control" id="exampleInputNIP" placeholder="14081070100" value=<?php echo $profil['nip'] ?>>
                 </div>
                 <div class="form-group">
-                  <form>
                     <label for="exampleInputGender">Jenis Kelamin</label><br/>
                     <input type="radio" name="gender" value="male" checked> Male
                     <input type="radio" name="gender" value="female"> Female
-                  </form>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputAbout">Deskripsi</label>
+                  <textarea name="deskripsi" class="form-control hresize" id="des"><?php echo $profil['deskripsi'] ?></textarea>        
                 </div>
                 <div class="form-group">
                   <label for="exampleInputAbout">About</label>
-                  <textarea name="deskripsi" class="form-control hresize" id="encJs2"></textarea>
+                  <textarea name="about" class="form-control hresize" id="encJs2"><?php echo $profil['about'] ?></textarea>
                   
                 </div>
                 <div class="form-group">
                   <label for="exampleInputAward">Award</label>
-                  <textarea name="award" class="form-control hresize" id="encJs2"></textarea>
+                  <textarea name="award" class="form-control hresize" id="encJs2"><?php echo $profil['award'] ?></textarea>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputAward">Misc</label>
-                  <textarea name="misc" class="form-control hresize" id="encJs2"></textarea>
+                  <textarea name="misc" class="form-control hresize" id="encJs2"><?php echo $profil['misc'] ?></textarea>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputFile">Masukkan Foto</label>
@@ -125,11 +143,40 @@
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
-                <button name="tambahdosen" type="submit" class="btn btn-primary">Submit</button>
+                <button name="editdosen" type="submit" class="btn btn-primary">Submit</button>
               </div>
             </form>
           </div> 
         </div>
+
+        
+        <div class="col-md-4">
+          <!-- general form elements -->
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Tambah Mata Kuliah</h3>
+              <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+              </div><!-- /.box-tools -->
+            </div>
+            <!-- /.box-header -->
+            <!-- form start -->
+            <form role="form" action="index.php" method="post" enctype="multipart/form-data">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputNama">Nama Mata Kuliah</label>
+                  <input name="namamk" type="text" class="form-control" id="exampleInputEmail1" placeholder="Nama Mata Kuliah">
+                  <input name="nip" type="hidden" value=<?php echo $profil['nip'] ?>>
+                </div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button name="tambahmk" type="submit" class="btn btn-primary pull-right">Submit</button>
+              </div>
+            </form>
+          </div> 
+        </div>
+
       </div>
     </section>
     

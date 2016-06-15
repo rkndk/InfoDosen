@@ -10,9 +10,8 @@ $connect = @mysql_connect("localhost", "root", "") or die("Gagal Connect");
   $misc = $_POST['misc'];
   $fotodosen = $_FILES['fotodosen']['name'];
 
-mysql_select_db("projectpbw", $connect) or die("Gagal buka database");
-mysql_query("INSERT INTO dosen (nama, password, nip, gender, deskripsi, about, award, misc, fotodosen) VALUES ('$nama', '$nama', '$nip', '$gender', '$deskripsi', '$about', '$award', '$misc', '$fotodosen'), $connect)");
+	mysql_select_db("projectpbw", $connect) or die("Gagal buka database");
+	mysql_query("INSERT INTO dosen (nama, password, nip, gender, deskripsi, about, award, misc, fotodosen) VALUES ('$nama', '$nama', '$nip', '$gender', '$deskripsi', '$about', '$award', '$misc', '$fotodosen'), $connect)");
 
-move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES['fotodosen']['name']);
-echo "zz";
+	move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES['fotodosen']['name']);
 ?>

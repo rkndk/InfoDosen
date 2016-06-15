@@ -31,9 +31,16 @@
       $query = mysql_query("select * from mahasiswa where nim='$nimornip' AND password='".$password."'", $connection);
       $rows = mysql_num_rows($query);
       if ($rows == 1) {
-        $_SESSION['user']=$nimornip; // Membuat Sesi/session
-        $_SESSION['level']="mahasiswa";
-        header("location: mahasiswa/index.php");
+        $query = mysql_query("select * from mahasiswa where nim='$nimornip' AND password='".$password."' AND statusmhs='APPROVED'", $connection);
+          $rows = mysql_num_rows($query);
+          if ($rows == 1) {
+            $_SESSION['user']=$nimornip; // Membuat Sesi/session
+            $_SESSION['level']="mahasiswa";
+            header("location: mahasiswa/index.php");
+          }
+          else{
+            header("location: login.php?pending");
+          }
       }
       else {
         // SQL query untuk memeriksa apakah user terdapat di database pada tabel dosen
@@ -55,6 +62,10 @@
   else if(isset($_GET['error'])){
     $pesan = "Nomor Induk atau Password salah";
   }
+  else if(isset($_GET['pending'])){
+    $pesan = "Akun anda menunggu persetujuan admin";
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -129,9 +140,9 @@
       </div>
     </form>
     <br>
-    Belum memiliki akun?<a href="page/daftarmaha.html"> <b>DAFTAR</b></a><br>
+    Belum memiliki akun?<a href="daftar.php"> <b>DAFTAR</b></a><br>
 
-    Lupa Password? Klik<a href="page/lupapass.html"> <b>Disini</b></a>
+    Lupa Password? Klik<a href="lupapass.php"> <b>Disini</b></a>
   </div>
   <!-- /.login-box-body -->
 </div>

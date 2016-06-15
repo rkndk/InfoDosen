@@ -5,6 +5,32 @@ if($_SESSION['level']!="dosen"){
   header('Location: ../login.php');
 }
 $user=$userOnSession;
+$profil=$user;
+
+if (isset($_POST['editdosen'])) {
+  $nama = $_POST["nama"];
+  $nip = $_POST["nip"];
+  $gender = $_POST["gender"];
+  $deskripsi = $_POST["deskripsi"];
+  $about = $_POST["about"];
+  $award = $_POST["award"];
+  $misc = $_POST["misc"];
+  $fotodosen = $_FILES['fotodosen']['name'];
+
+  mysql_select_db("projectpbw") or die("Gagal buka database");
+  $sql="";
+  if(empty($fotodosen)){
+    $sql="UPDATE dosen SET nama='$nama', gender='$gender', deskripsi='$deskripsi', about='$about', award='$award', misc='$misc' WHERE nip='$nip'";
+  }
+  else{
+    $sql="UPDATE dosen SET nama='$nama', gender='$gender', deskripsi='$deskripsi', about='$about', award='$award', misc='$misc',foto='$fotodosen' WHERE nip='$nip'";
+  }
+  
+  $sqla=mysql_query($sql);
+
+  move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES['fotodosen']['name']);
+  header("location: profil.php");
+}
 
 ?>
 
@@ -153,7 +179,7 @@ $user=$userOnSession;
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="profil.php" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <a href="../logout.php" class="btn btn-default btn-flat">Keluar</a>
@@ -206,67 +232,88 @@ $user=$userOnSession;
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Pesan
-        <small>Dosen</small>
+        Dosen
       </h1>
       <ol class="breadcrumb">
         <li><a href="index.php"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li class="active">Pesan</li>
+        <li class="active">Profil</li>
       </ol>
     </section>
 
     <!-- Main content -->
     <section class="content">
-
       <div class="row">
         <div class="col-md-3">
-          <!-- Profile Image -->
+    <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $user['foto'] ?>" alt="User profile picture">
+              <img class="profile-user-img img-responsive img-circle" src="../assets/images/<?php echo $profil['foto'] ?>" alt="User profile picture">
 
-              <h3 class="profile-username text-center"><?php echo $user['nama'] ?></h3>
+              <h3 class="profile-username text-center"><?php echo $profil['nama'] ?></h3>
 
-              <p class="text-muted text-center">NIP : <?php echo $user['nip'] ?></p>
-
-              <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                   <div class="knob-label">  <?php echo $user['status'] ?></div>
-                </li>                
-              </ul>
-              <a href="editprofil.php" class="btn btn-primary btn-block"><b>Edit</b></a>
-              <a href="gantipassword.php" class="btn btn-primary btn-block"><b>Ganti Password</b></a>
+              <p class="text-muted text-center">NIP : <?php echo $profil['nip'] ?>  
             </div>
             <!-- /.box-body -->
           </div>
-          <!-- /.box -->
-        </div>
-          <div class="col-md-9">
-          <div class="box box-solid">
+        </div>                        
+        
+        <!-- left column -->
+        <div class="col-md-5">
+          <!-- general form elements -->
+          <div class="box box-primary">
             <div class="box-header with-border">
-              <i class="fa fa-text-width"></i>
-
-              <h3 class="box-title">Deskripsi</h3>
+              <h3 class="box-title">Form Edit</h3>
             </div>
             <!-- /.box-header -->
-            <div class="box-body">
-              <dl class="dl-horizontal">
-                <dt>About</dt>
-                <dd><?php echo $user['about'] ?></dd>
-              </dl>
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
+            <!-- form start -->
+            <form role="form" action="editprofil.php" method="post" enctype="multipart/form-data">
+              <div class="box-body">
+                <div class="form-group">
+                  <label for="exampleInputNama">Nama</label>
+                  <input name="nama" type="text" class="form-control" placeholder="Masukkan Nama" value="<?php echo $profil['nama'] ?>">
+                </div>
+                <div class="form-group">
+                  <input name="nip" type="hidden" class="form-control" id="exampleInputNIP" placeholder="14081070100" value=<?php echo $profil['nip'] ?>>
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputGender">Jenis Kelamin</label><br/>
+                    <input type="radio" name="gender" value="male" checked> Male
+                    <input type="radio" name="gender" value="female"> Female
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputAbout">Deskripsi</label>
+                  <textarea name="deskripsi" class="form-control hresize" id="des"><?php echo $profil['deskripsi'] ?></textarea>        
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputAbout">About</label>
+                  <textarea name="about" class="form-control hresize" id="encJs2"><?php echo $profil['about'] ?></textarea>
+                  
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputAward">Award</label>
+                  <textarea name="award" class="form-control hresize" id="encJs2"><?php echo $profil['award'] ?></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputAward">Misc</label>
+                  <textarea name="misc" class="form-control hresize" id="encJs2"><?php echo $profil['misc'] ?></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputFile">Masukkan Foto</label>
+                  <input name="fotodosen" type="file" id="exampleInputFile">
+                  <p class="help-block">Max 160 x 160 Pixel</p>
+                </div>
+                
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer">
+                <button name="editdosen" type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </form>
+          </div> 
         </div>
-        <!-- ./col -->
-      
-      <!-- /.row -->
-      <!-- END TYPOGRAPHY -->
-        
+
       </div>
     </section>
-    <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">

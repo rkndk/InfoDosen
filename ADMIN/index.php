@@ -1,13 +1,12 @@
 <?php 
 include "session.php";
-include "koneksi.php";
+include "../koneksi.php";
 
-if(empty($_SESSION['user'])) {
+if(empty($_SESSION['user'])||$_SESSION['level']!="admin") {
    header("Location: loginadmin.php");
 }
 
 if (isset($_POST['tambahdosen'])) {
-   
   $nama = $_POST["nama"];
   $nip = $_POST["nip"];
   $gender = $_POST["gender"];
@@ -17,11 +16,42 @@ if (isset($_POST['tambahdosen'])) {
   $misc = $_POST["misc"];
   $fotodosen = $_FILES['fotodosen']['name'];
 
-mysql_select_db("projectpbw") or die("Gagal buka database");
-$sql="INSERT into dosen (nip, password, nama, gender, foto, deskripsi, about, award, misc, status) VALUES ('$nip', '$nip', '$nama', '$gender', '$fotodosen', '$deskripsi', '$about', '$award', '$misc', '')";
-$sqla=mysql_query($sql);
+  mysql_select_db("projectpbw") or die("Gagal buka database");
+  $sql="INSERT into dosen (nip, password, nama, gender, foto, deskripsi, about, award, misc, status) VALUES ('$nip', '$nip', '$nama', '$gender', '$fotodosen', '$deskripsi', '$about', '$award', '$misc', 'UNAVAILABLE')";
+  $sqla=mysql_query($sql);
 
-move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES['fotodosen']['name']);
+  move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES['fotodosen']['name']);
+}
+else if (isset($_POST['editdosen'])) {
+  $nama = $_POST["nama"];
+  $nip = $_POST["nip"];
+  $gender = $_POST["gender"];
+  $deskripsi = $_POST["deskripsi"];
+  $about = $_POST["about"];
+  $award = $_POST["award"];
+  $misc = $_POST["misc"];
+  $fotodosen = $_FILES['fotodosen']['name'];
+
+  mysql_select_db("projectpbw") or die("Gagal buka database");
+  $sql="";
+  if(empty($fotodosen)){
+    $sql="UPDATE dosen SET nama='$nama', gender='$gender', deskripsi='$deskripsi', about='$about', award='$award', misc='$misc' WHERE nip='$nip'";
+  }
+  else{
+    $sql="UPDATE dosen SET nama='$nama', gender='$gender', deskripsi='$deskripsi', about='$about', award='$award', misc='$misc',foto='$fotodosen' WHERE nip='$nip'";
+  }
+  
+  $sqla=mysql_query($sql);
+
+  move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES['fotodosen']['name']);
+}
+else if (isset($_POST['tambahmk'])) {
+  $namamk = $_POST["namamk"];
+  $nip = $_POST["nip"];
+
+  mysql_select_db("projectpbw") or die("Gagal buka database");
+  $sql="INSERT into matakuliah (nama, pengajar) VALUES ('$namamk', '$nip')";
+  $sqla=mysql_query($sql);
 }
 
 
@@ -38,9 +68,7 @@ move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES
   <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet" href="../dist/css/font-awesome.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="../dist/css/skins/_all-skins.min.css">
@@ -106,7 +134,7 @@ move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES
 
               <ul class="list-group list-group-unbordered">               
               </ul>
-              <a href="editdosen.php?username='.$datadosen['nama'].'" class="btn btn-primary btn-block"><b>Edit Profil</b></a>
+              <a href="editdosen.php?nip='.$datadosen['nip'].'" class="btn btn-primary btn-block"><b>Edit Profil</b></a>
             </div>
             <!-- /.box-body -->
           </div>
@@ -126,14 +154,17 @@ move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES
         <!-- /.box -->
       </section>
      <section class="content">       
-        <div id="mahasiswa" class="box box-solid box-primary">
+        <div id="mahasiswapending" class="box box-solid box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title">Data Mahasiswa</h3>
+            <h3 class="box-title">Data Mahasiswa Menunggu Persetujuan</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+            </div><!-- /.box-tools -->
           </div>
           <div class="box-body table-responsive no-padding">
 
           <?php    
-            $sqlmhs="select * from mahasiswa";
+            $sqlmhs="select * from mahasiswa WHERE statusmhs='PENDING'";
             $sqlm=mysql_query($sqlmhs);
             if (!$sqlm) { // add this check.
               die('Invalid query: ' . mysql_error());
@@ -144,26 +175,76 @@ move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES
                                   <th>NIM</th>
                                   <th>Nama</th>
                                   <th>Jurusan</th>
-                                  <th>Status</th>                  
+                                  <th>Status</th>  
+                                  <th>Action</th>                 
                                 </tr>';
               while ($datamhs=mysql_fetch_array($sqlm)) {
               $m++;
-                echo '
+                    echo '
+                                <tr>
+                                  <td>'.$datamhs['nim'].'</td>
+                                  <td>'.$datamhs['nama'].'</td>
+                                  <td>'.$datamhs['jurusan'].'</td>
+                                  <td><span class="label label-warning">Pending</span></td>
+                                  <td>
+                                    <button onclick="hapus('.$datamhs['nim'].')" class="btn btn-danger"><i class="fa fa-close text-white"></i></button>
+                                    <button onclick="terima('.$datamhs['nim'].')" class="btn btn-success"><i class="fa fa-check text-white"></i></button>
+                                  </td>
+                                  
+                                </tr>';
+              }
+                
+              echo '</table>';
+          ?>
+            </div>
+            </div>
+
+            <div id="mahasiswa" class="box box-solid box-primary collapsed-box">
+          <div class="box-header with-border">
+            <h3 class="box-title">Data Mahasiswa Aktif</h3>
+            <div class="box-tools pull-right">
+              <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+            </div><!-- /.box-tools -->
+          </div>
+          <div class="box-body table-responsive no-padding">
+
+          <?php    
+            $sqlmhs="select * from mahasiswa WHERE statusmhs='APPROVED'";
+            $sqlm=mysql_query($sqlmhs);
+            if (!$sqlm) { // add this check.
+              die('Invalid query: ' . mysql_error());
+            }
+            $m= 0;
+              echo '<table class="table table-striped">
+                    <tr>
+                                  <th>NIM</th>
+                                  <th>Nama</th>
+                                  <th>Jurusan</th>
+                                  <th>Status</th>  
+                                  <th>Action</th>                 
+                                </tr>';
+              while ($datamhs=mysql_fetch_array($sqlm)) {
+              $m++;
+                    echo '
                                 <tr>
                                   <td>'.$datamhs['nim'].'</td>
                                   <td>'.$datamhs['nama'].'</td>
                                   <td>'.$datamhs['jurusan'].'</td>
                                   <td><span class="label label-success">Approved</span></td>
+                                  <td>
+                                    <button onclick="hapus('.$datamhs['nim'].')" class="btn btn-danger"><i class="fa fa-close text-white"></i></button>
+                                  </td>
                                   
                                 </tr>';
-                  }
+              }
                 
               echo '</table>';
           ?>
             </div>
+            </div>
         <!-- /.box -->
       </section>
-      <!-- /.content -->
+
     </div>
     <!-- /.container -->
   </div>
@@ -192,5 +273,30 @@ move_uploaded_file($_FILES['fotodosen']['tmp_name'], "../assets/images/".$_FILES
 <script src="../dist/js/app.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
+<script type="text/javascript">
+  function hapus(nim){
+    $.post("data.php",
+      {
+          tipe: "hapus",
+          nim: nim
+      },
+      function(data, status){
+          window.location.href="index.php";
+      }
+    );
+  }
+
+  function terima(nim){
+    $.post("data.php",
+      {
+          tipe: "terima",
+          nim: nim
+      },
+      function(data, status){
+          window.location.href="index.php";
+      }
+    );
+  }
+</script>
 </body>
 </html>

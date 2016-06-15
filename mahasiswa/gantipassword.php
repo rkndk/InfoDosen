@@ -16,7 +16,7 @@ if(isset($_POST['submit'])){
   else{
     $sqla=mysql_query("select * from mahasiswa where nim='".$user['nim']."' AND password='".$passwordlama."'");
     if(mysql_num_rows($sqla)==1){
-      mysql_query("UPDATE mahasiswa SET password='".$passwordbaru."' WHERE nim='".$nim."'", $connection) or die(mysql_error());
+      mysql_query("UPDATE mahasiswa SET password='".$passwordbaru."' WHERE nim='".$user['nim']."'", $connection) or die(mysql_error());
       header("location: gantipassword.php?sukses");
     }
     else{
@@ -298,7 +298,7 @@ if(isset($_POST['submit'])){
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputNamaMhs">Password Lama</label>
-                  <input name="nama" type="password" class="form-control" id="exampleInputMhs" placeholder="Password Lama" required>
+                  <input name="passwordlama" type="password" class="form-control" id="exampleInputMhs" placeholder="Password Lama" required>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputNamaMhs">Password Baru</label>

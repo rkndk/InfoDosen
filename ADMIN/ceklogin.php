@@ -25,6 +25,7 @@ $query = mysql_query("select * from admin where username='$username' AND passwor
 $rows = mysql_num_rows($query);
 if ($rows == 1) {
 $_SESSION['user']=$username; // Membuat Sesi/session
+$_SESSION['level']="admin";
 header("location: index.php"); // Mengarahkan ke halaman index
 } else {
 $error = "username atau Password belum terdaftar";

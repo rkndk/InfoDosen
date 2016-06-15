@@ -2,7 +2,7 @@
 include "../session.php";
 include "../koneksi.php";
 if($_SESSION['level']!="dosen"){
-  header('Location: login.php');
+  header('Location: ../login.php');
 }
 $user=$userOnSession;
 ?>
