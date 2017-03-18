@@ -29,12 +29,12 @@
       $mail->isSMTP();                                      // Set mailer to use SMTP
       $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
       $mail->SMTPAuth = true;                               // Enable SMTP authentication
-      $mail->Username = 'infodosenapp@gmail.com';                 // SMTP username
-      $mail->Password = 'infodosen123';                           // SMTP password
+      $mail->Username = 'email@domain.com';                 // SMTP username
+      $mail->Password = 'password';                           // SMTP password
       $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
       $mail->Port = 587;                                    // TCP port to connect to
 
-      $mail->setFrom('infodosenapp@gmail.com', 'Aplikasi Info Dosen');
+      $mail->setFrom('email@domain.com', 'Aplikasi Info Dosen');
       $mail->addAddress($data['email']);            
 
       $mail->isHTML(true);                                  // Set email format to HTML
